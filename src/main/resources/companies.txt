@@ -1,0 +1,10 @@
+5a5a17f7-bc46-443b-b74a-71e6708d16d8|tt|ggg|false
+e2b32e33-75a2-4132-931f-cc8eedffe756|PrvaPromena|SRB|false
+101328d3-ddcb-42b9-9339-1cd322832d4e|Peta|POL|true
+g922347d-fa39-43a6-9e1e-0c7b1773363e|Treca|ENG|true
+e2c4d79e-e56a-4558-b515-8d98c52ba846|Prvas|SRB|false
+c1242cf7-5e09-465a-b563-247057c156a7|Nova|NOV|false
+ae08c3f0-9047-4ed1-a97f-6f5151154a8c|Druga|GER|false
+d79fc246-1440-4a7c-857c-da83a6e48b91|ff|fft|false
+73a8a27a-4b14-45f8-8144-7607a90669c4|Obrisana|ZIM|false
+a6686a67-d8d5-4f14-9aa3-da1db0f20798|Prvas|SRB|false
