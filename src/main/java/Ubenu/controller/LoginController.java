@@ -1,6 +1,7 @@
 package Ubenu.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,26 +12,39 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import Ubenu.model.User;
 import Ubenu.service.UserService;
 
 @Controller
-@RequestMapping(value="/users/register")
-public class RegistrationController {
+@RequestMapping(value="/users/login")
+public class LoginController {
 	
 	@Autowired
 	private UserService service;
 	
 	@GetMapping("")
 	public String index() {
-		return "users/register";
+		return "users/login";
 	}
 	
 	@PostMapping("")
-	public void register(@RequestParam String username,@RequestParam String password,@RequestParam String email,
-			@RequestParam String firstName,@RequestParam String lastName,
-			@RequestParam String dateOfBirth,@RequestParam String address,@RequestParam String phoneNumber, HttpServletResponse response) throws IOException {
-		service.save(username, password, email, firstName, lastName, dateOfBirth, address, phoneNumber);
+	public void login(@RequestParam String username, @RequestParam String password, HttpServletResponse response) throws IOException {
+		
+		boolean found = false;
+		List<User> users = service.findAll();
+		for (User user : users) {
+			System.out.println(user.getUsername() + "---"+ user.getPassword() );
+			if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+				found = true;
+				break;
+			}
+		}
+		if (found) {
+			response.sendRedirect("/Ubenu/companies");
+		}else {
 		response.sendRedirect("/Ubenu/users/login");
+		}
+		
 	}
 
 }
