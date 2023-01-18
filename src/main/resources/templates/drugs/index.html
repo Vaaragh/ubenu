@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>Drugs</title>
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/TableStyles.css"/>	
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/HorizontalMenuStyles.css"/>	
+
+</head>
+<body>
+<ul>
+   <li><a href="/Ubenu/companies">Companies</a></li>
+   <li><a href="/Ubenu/registration">Registration</a></li>
+   <li><a href="/Ubenu/companies/add">Add New Company</a></li>
+  
+  </ul>
+  <table>
+   <caption>
+   Drugs
+   </caption>
+   <thead>
+   <tr>
+    <th>Image</th>
+    <th>Name</th>
+    <th>Rating</th>
+    <th>Price</th>
+   </tr>
+  </thead>
+  <tbody>
+  	<tr th:each="drug : ${drugs}">
+  		<td>
+  		<img alt="drug" th:src="${drug.getImagePath}">
+  		</td>
+		<td>
+		<a type="button" th:href="|drugs/details?sysId=${drug.getSysId()}|" th:text="${drug.getDrugName()}"></a>
+		</td>
+		<td th:text="${drug.getRating()}"></td> 
+		<td th:text="${drug.getPrice()}"></td>
+		<td th:text="${drug.getPharmaCompany().getCompanyName()}"></td> 
+		<td>
+		<form action="drugs/delete" method="post">
+		<input type="hidden" th:value="${drug.getSysId()}" name="sysId">
+		<input type="submit" value="Delete">
+		</form></td>		
+  
+  	</tr>
+  
+  </tbody>
+  </table>
+</body>
+</html>

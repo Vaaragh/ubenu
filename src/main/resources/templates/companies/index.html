@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>Companies</title>
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/TableStyles.css"/>	
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/HorizontalMenuStyles.css"/>	
+
+</head>
+<body>
+<ul>
+   <li><a href="/Ubenu/companies">Companies</a></li>
+   <li><a href="/Ubenu/registration">Registration</a></li>
+   <li><a href="/Ubenu/companies/add">Add New Company</a></li>
+   <li><a href="/Ubenu/drugs">Drugs</a></li>
+  
+  </ul>
+  <table>
+   <caption>
+   Companies
+   </caption>
+   <thead>
+   <tr>
+    <th>ID</th>
+    <th>Company Name</th>
+    <th>HQ</th>
+   </tr>
+  </thead>
+  <tbody>
+  	<tr th:each="company : ${companies}">
+  		<td th:text="${company.getSysId()}"></td>
+		<td>
+		<a type="button" th:href="|companies/details?sysId=${company.getSysId()}|" th:text="${company.getCompanyName()}"></a>
+		</td>
+		<td th:text="${company.getCountry()}"></td> 
+		<td>
+		<form action="companies/delete" method="post">
+		<input type="hidden" th:value="${company.getSysId()}" name="sysId">
+		<input type="submit" value="Delete">
+		</form></td>		
+  
+  	</tr>
+  
+  </tbody>
+  </table>
+</body>
+</html>

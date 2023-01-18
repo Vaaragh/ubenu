@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>Companies</title>
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/TableStyles.css"/>	
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/HorizontalMenuStyles.css"/>	
+
+</head>
+<body>
+<ul>
+   <li><a href="/Ubenu/companies">Companies</a></li>
+   <li><a href="/Ubenu/registration">Registration</a></li>
+   <li><a href="/Ubenu/companies/add">Add New Company</a></li>
+  
+  </ul>
+<form method="post" action="update">
+	<input type="hidden" name="sysId" th:value="${company.getSysId()}">
+   <table>
+    <caption>
+     Pharmaceutical Company
+    </caption>
+    <tbody><tr>
+     <th>Name</th>
+     <td><input type="text" name="companyName" id="nameField" th:value="${company.getCompanyName()}"></td>
+    </tr>
+    <tr>
+     <th>HQ</th>
+     <td><input type="text" name="country" id="hqField" minlength="3" maxlength="3" th:value="${company.getCountry()}" ></td>
+    </tr>
+    <tr>
+     <th></th>
+     <td><input type="submit"></td>
+    </tr>
+   </tbody></table>
+  </form>
+
+</body>
+</html>

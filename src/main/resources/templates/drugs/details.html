@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>drugs</title>
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/TableStyles.css"/>	
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/HorizontalMenuStyles.css"/>	
+
+</head>
+<body>
+<ul>
+   <li><a href="/Ubenu/companies">Companies</a></li>
+   <li><a href="/Ubenu/users/register">Registration</a></li>
+   <li><a href="/Ubenu/companies/add">Add New Company</a></li>
+  
+  </ul>
+<form method="post" action="update">
+<input type="hidden" name="sysId" th:value="${drug.getSysId()}">
+   <table>
+    <caption>
+     Drug
+    </caption>
+    <tbody>
+    <tr>
+     <th>drugName</th>
+     <td><input type="text" name="drugName" th:value="${drug.getDrugName()}"></td>
+    </tr><tr>
+     <th>drugCode</th>
+     <td><input type="text" name="drugCode" th:value="${drug.getDrugCode()}"></td>
+    </tr>
+    <tr>
+     <th>drugDescription</th>
+     <td><input type="text" name="drugDescription" th:value="${drug.getDrugDescription()}"></td>
+    </tr>
+      <tr>
+     <th>contraindications</th>
+     <td>
+     <input type="text" name="contraindications" th:value="${drug.getContraindications()}"></td>
+    </tr>
+    <tr>
+     <th>drugFormulation</th>
+     <td>
+     
+     <select name="drugFormulation">
+     		<option th:each="form: ${drugForms}"
+     				th:value="${form.toString()}"
+     				th:text="${form.toString()}">
+     </select>
+     
+     </td>
+    </tr>
+    <tr>
+     <th>rating</th>
+     <td><input type="text" name="rating" th:value="${drug.getRating()}"></td>
+    </tr>
+    <tr>
+     <th>imagePath</th>
+     <td><input type="text" name="imagePath" th:value="${drug.getImagePath()}"></td>
+    </tr>
+    <tr>
+     <th>inventory</th>
+     <td><input type="text" name="inventory" th:value="${drug.getInventory()}"></td>
+    </tr>
+    <tr>
+     <th>price</th>
+     <td><input type="text" name="price" th:value="${drug.getPrice()}"></td>
+    </tr>
+    <tr>
+     <th>pharmaCompany</th>
+     <td>
+     
+    
+    <select name="pharmaCompany">
+    	<option th:each="company: ${companies}"
+    			 th:text="${company.getCompanyName()}"
+    			 th:value="${company.getSysId()}"/>
+    </select>
+    
+    </tr>
+    <tr>
+     <th>drugCategory</th>
+     <td>
+     
+     	<select name="drugCategory">
+     		<option th:each="category: ${categories}"
+     		th:text="${category.getCategoryName()}"
+     		th:value=${category.getSysId()}>
+     	</select>
+     	
+     </td>
+    </tr>
+    <tr>
+     <th>approved</th>
+     <td><input type="checkbox" name="active" checked></td>
+    </tr>
+    <tr>
+     <th></th>
+     <td><input type="submit"></td>
+    </tr>
+   </tbody></table>
+  </form>
+
+</body>
+</html>
