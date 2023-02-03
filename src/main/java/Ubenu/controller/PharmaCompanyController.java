@@ -41,8 +41,8 @@ public class PharmaCompanyController{
 	}
 	
 	@PostMapping("/add")
-	public void add(@RequestParam String companyName,@RequestParam String country, HttpServletResponse response) throws IOException {
-		service.save(companyName, country);
+	public void add(@ModelAttribute PharmaCompany pc, HttpServletResponse response) throws IOException {
+		service.save(pc);
 		response.sendRedirect("/Ubenu/companies");
 	}
 	

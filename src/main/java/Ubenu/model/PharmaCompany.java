@@ -40,11 +40,7 @@ public class PharmaCompany {
 	}
 
 
-	@Override
-	public String toString() {
-		return "PharmaCompany [sysId=" + sysId + ", companyName=" + companyName + ", country=" + country + ", active="
-				+ "]";
-	}
+
 	
 	
 	

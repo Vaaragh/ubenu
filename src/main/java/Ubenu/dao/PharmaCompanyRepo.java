@@ -39,9 +39,9 @@ public class PharmaCompanyRepo {
 		return db.query(sql, new RowMap());
 	}
 	
-	public void save(String name, String country) {
+	public void save(PharmaCompany pc) {
 		String sql = "INSERT INTO PharmaCompany (id, title, country) values (?, ?, ?)";
-		db.update(sql,IdGen.newID() , name, country);
+		db.update(sql,IdGen.newID() ,pc.getCompanyName(), pc.getCountry());
 	}
 	
 	public void update(PharmaCompany pharmaCompany) {

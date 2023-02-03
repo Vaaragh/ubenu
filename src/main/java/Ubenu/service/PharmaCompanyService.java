@@ -18,8 +18,8 @@ public class PharmaCompanyService {
 		return repo.findAll();
 	}
 	
-	public void save(String name, String country) {
-		repo.save(name, country);
+	public void save(PharmaCompany pc) {
+		repo.save(pc);
 	}
 	
 	public void update(PharmaCompany pharmaCompany) {
