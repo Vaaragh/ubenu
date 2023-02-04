@@ -41,8 +41,8 @@ public class DrugCategoryController {
 	}
 	
 	@PostMapping("/add")
-	public void add(@RequestParam String categoryName, @RequestParam String useCase, @RequestParam String description, HttpServletResponse response) throws IOException {
-		service.save(categoryName, useCase, description);
+	public void add(@ModelAttribute DrugCategory drugCategory, HttpServletResponse response) throws IOException {
+		service.save(drugCategory);
 		response.sendRedirect("/Ubenu/categories");
 	}
 	

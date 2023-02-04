@@ -40,7 +40,6 @@ public class DrugController {
 	public String details(@RequestParam String sysId, Model model) {
 		Drug drug = drugService.findOne(sysId);
 		model.addAttribute("drugForms", EDrugFormulation.values());
-		System.out.println(EDrugFormulation.values());
 		model.addAttribute("companies", companyService.findAll());
 		model.addAttribute("categories", categoryService.findAll());
 		model.addAttribute("drug", drug);
@@ -55,21 +54,21 @@ public class DrugController {
 		return "drugs/add";
 	}
 	
+	
 	@PostMapping("/add")
-	public void add(@RequestParam String drugName, @RequestParam String drugCode,@RequestParam String drugDescription,@RequestParam String contraindications,
-			@RequestParam String drugFormulation,@RequestParam float rating,@RequestParam String imagePath,@RequestParam int inventory,@RequestParam float price,
-			@RequestParam String pharmaCompany,@RequestParam String drugCategory, @RequestParam boolean active, HttpServletResponse response) throws IOException  {
-		drugService.save(drugName, drugCode, drugDescription, contraindications, drugFormulation, rating, imagePath, inventory, price, pharmaCompany, drugCategory, active);
+	public void add(@ModelAttribute Drug drug,@RequestParam String drugCategoryId, @RequestParam String pharmaCompanyId, HttpServletResponse response) throws IOException {
+		
+		drugService.save(drug, drugCategoryId, pharmaCompanyId);
 		response.sendRedirect("/Ubenu/drugs");
 	}
 	
 	@PostMapping("/update")
-	public void Update(@RequestParam String sysId, @RequestParam String drugName, @RequestParam String drugCode,@RequestParam String drugDescription,@RequestParam String contraindications,
-			@RequestParam String drugFormulation,@RequestParam float rating,@RequestParam String imagePath,@RequestParam int inventory,@RequestParam float price,
-			@RequestParam String pharmaCompany,@RequestParam String drugCategory, @RequestParam boolean active, HttpServletResponse response) throws IOException  {
-		drugService.update(sysId, drugName, drugCode, drugDescription, contraindications, drugFormulation, rating, imagePath, inventory, price, pharmaCompany, drugCategory, active);
+	public void update(@ModelAttribute Drug drug, @RequestParam String drugCategoryId, @RequestParam String pharmaCompanyId, HttpServletResponse response) throws IOException {
+		drugService.update(drug, drugCategoryId, pharmaCompanyId);
 		response.sendRedirect("/Ubenu/drugs");
 	}
+	
+	
 	
 	@PostMapping("/delete")
 	public void delete(@RequestParam String sysId, HttpServletResponse response) throws IOException  {
