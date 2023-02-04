@@ -26,6 +26,10 @@ public class ShoppingItemService {
 		return repo.findOne(sysId);
 	}
 	
+	public List<ShoppingItem> findForOrder(String sysId){
+		return repo.findForOrder(sysId);
+	}
+	
 	public void save(ShoppingItem ite, String drugId) {
 		Drug drug = drugServ.findOne(drugId);
 		ite.setDrug(drug);

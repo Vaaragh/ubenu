@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import Ubenu.model.Drug;
 import Ubenu.model.ShoppingItem;
+import Ubenu.model.utilities.IdGen;
 import Ubenu.service.DrugService;
 
 @Repository
@@ -54,6 +55,12 @@ public class ShoppingItemRepo {
 		return db.queryForObject(sql,new RowMap(), sysId);
 	}
 	
+	public List<ShoppingItem> findForOrder(String sysId){
+		String sql = "SELECT s.id, s.drug_id, s.amount FROM ShoppingItem s WHERE s.id IN (SELECT c.item_id FROM CustomerOrderItems c WHERE c.order_id=?);";
+		return db.query(sql, new RowMap(), sysId);
+		
+	}
+	
 	public void delete(String sysId) {
 		String sql = "DELETE FROM ShoppingItem WHERE id=?";
 		db.update(sql, sysId);
@@ -61,7 +68,7 @@ public class ShoppingItemRepo {
 	
 	public void save(ShoppingItem s) {
 		String sql = "INSERT INTO ShoppingItem (id, drug_id, amount) VALUES (?,?,?);";
-		db.update(sql,s.getSysId(), s.getDrug().getSysId(), s.getAmount());
+		db.update(sql,IdGen.newID(), s.getDrug().getSysId(), s.getAmount());
 	}
 	
 	public void update(ShoppingItem s) {
