@@ -39,5 +39,16 @@ public class UserService {
 		repo.update(user);
 	}
 	
+	public User login(String username, String password) {
+		List<User> users = repo.findAll();
+		
+		for (User user : users) {
+			if (user.getUsername()==username && user.getPassword()==password && user.isActive()) {
+				return user;
+			}
+		}
+		return null;
+	}
+	
 	
 }

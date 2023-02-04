@@ -14,6 +14,8 @@ import Ubenu.model.DrugCategory;
 import Ubenu.model.PharmaCompany;
 import Ubenu.model.enums.EDrugFormulation;
 import Ubenu.model.utilities.IdGen;
+import Ubenu.service.DrugCategoryService;
+import Ubenu.service.PharmaCompanyService;
 
 @Repository
 public class DrugRepo {
@@ -22,10 +24,10 @@ public class DrugRepo {
 	private JdbcTemplate db;
 	
 	@Autowired
-	private DrugCategoryRepo categoryRepo;
+	private DrugCategoryService categoryServ;
 	
 	@Autowired
-	private PharmaCompanyRepo companyRepo;
+	private PharmaCompanyService companyServ;
 	
 	private class RowMap implements RowMapper<Drug>{
 
@@ -46,8 +48,8 @@ public class DrugRepo {
 			String categoryId = rs.getString(index++);
 			boolean active = rs.getBoolean(index++);
 			
-			PharmaCompany company = companyRepo.findOne(companyId);
-			DrugCategory category = categoryRepo.findOne(categoryId);
+			PharmaCompany company = companyServ.findOne(companyId);
+			DrugCategory category = categoryServ.findOne(categoryId);
 			
 			Drug drug = new Drug();
 			drug.setSysId(id);
@@ -99,7 +101,7 @@ public class DrugRepo {
 	 
 	 
 	 public void save(Drug drug) {
-		 String sql = "INSERT INTO Drug (id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		 String sql = "INSERT INTO Drug (id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		 db.update(sql, IdGen.newID(), drug.getDrugName(), drug.getDrugCode(), drug.getDrugDescription(), drug.getContraindications(), drug.getDrugFormulation().toString(), drug.getImagePath(), drug.getInventory(), drug.getPrice(), drug.getPharmaCompany().getSysId(), drug.getDrugCategory().getSysId(), drug.isActive());
 
 	 }
