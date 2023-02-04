@@ -61,49 +61,36 @@ public class UserRepo {
 	}
 	
 	public List<User> findAll() {
-		String sql = "SELECT sysId, username, password, email, firstName, lastName, dateOfBirth, address, phoneNumber, registrationDateTime, role, active \r\n"
+		String sql = "SELECT id, username, password, email, firstName, lastName, dateOfBirth, address, phoneNumber, registrationDateTime, role, active \r\n"
 				+ "FROM UserTable;";
 		return db.query(sql, new RowMap());
 	}
 	
 	public User findOne(String sysId) {
-		String sql = "SELECT sysId, username, password, email, firstName, lastName,"
-				+ " dateOfBirth, address, phoneNumber, registrationDateTime, role, active"
-				+ "FROM UserTable WHERE sysId=?";
+		String sql = "SELECT id, username, password, email, firstName, lastName, dateOfBirth, address, phoneNumber, registrationDateTime, role, active FROM UserTable WHERE id=?";
 		return db.queryForObject(sql, new RowMap(), sysId);
 	}
 	
-	public void save(String username, String password, String email, String firstName, String lastName,
-			LocalDate dateOfBirth, String address, String phoneNumber, LocalDateTime registartionDateTime, String role,
-			boolean active) {
+	public void save(User u) {
 		String sql = "INSERT INTO UserTable"
-				+ " (sysId, username, password, email, firstName, lastName, dateOfBirth,"
+				+ " (id, username, password, email, firstName, lastName, dateOfBirth,"
 				+ "address, phoneNumber,registrationDateTime, role, active) values "
 				+ "(?,?,?,?,?,?,?,?,?,?,?,?)";
-		db.update(sql, IdGen.newID(), username, password, email, firstName, lastName, dateOfBirth, address, phoneNumber, registartionDateTime, role, active);
+		db.update(sql, IdGen.newID(), u.getUsername(), u.getPassword(), u.getEmail(), u.getFirstName(), u.getLastName(), u.getDateOfBirth(), u.getAddress(), u.getPhoneNumber(), u.getRegistartionDateTime(), u.getRole().toString(), u.isActive());
 	}
 	
-	public void update(String sysId, String username, String password, String email, String firstName, String lastName,
-			LocalDate dateOfBirth, String address, String phoneNumber, LocalDateTime registartionDateTime, ERole role) {
+	public void update(User u) {
 		String sql = "UPDATE UserTable SET"
-				+ " sysId=?, username=?, password=?, email=?, firstName=?, lastName=?, dateOfBirth=?,"
-				+ "address=?, phoneNumber=? ,registrationDateTime=?, role=? WHERE sysId=? ";
-				db.update(sql, username, password, email, firstName, lastName, dateOfBirth, address, phoneNumber, registartionDateTime, role, sysId);
+				+ " id=?, username=?, password=?, email=?, firstName=?, lastName=?, dateOfBirth=?,"
+				+ "address=?, phoneNumber=? ,registrationDateTime=?, role=?, active=? WHERE id=? ";
+				db.update(sql, u.getUsername(), u.getPassword(), u.getEmail(), u.getFirstName(), u.getLastName(), u.getDateOfBirth(), u.getAddress(), u.getPhoneNumber(), u.getRegistartionDateTime(), u.getRole().toString(), u.isActive(), u.getSysId());
 	}
 	
 	public void delete(String sysId) {
-		 String sql = "DELETE FROM UserTable WHERE sysId=?";
+		 String sql = "DELETE FROM UserTable WHERE id=?";
 		 db.update(sql,sysId);
 	}
 	
-	public User login(String username, String password) {
-		String sql = "SELECT sysId, username, password, email, firstName, lastName,"
-				+ " dateOfBirth, address, phoneNumber, registrationDateTime, role, active "
-				+ "FROM UserTable WHERE username=? and password=?";
-		User user =  db.queryForObject(sql, new RowMap(), username, password);
-		return user;
 
-	}
-	
 
 }

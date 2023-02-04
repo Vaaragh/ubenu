@@ -38,11 +38,15 @@
     </tr>
     <tr>
      <th>drugFormulation</th>
-     <td><input type="text" name="drugFormulation"></td>
-    </tr>
-    <tr>
-     <th>rating</th>
-     <td><input type="text" name="rating"></td>
+          <td>
+     
+     <select name="drugFormulation">
+     		<option th:each="form: ${drugForms}"
+     				th:value="${form.toString()}"
+     				th:text="${form.toString()}">
+     </select>
+     
+     </td>
     </tr>
     <tr>
      <th>imagePath</th>
@@ -58,15 +62,27 @@
     </tr>
     <tr>
      <th>pharmaCompany</th>
-     <td><input type="text" name="pharmaCompany"></td>
+     <td>
+     
+    
+    <select name="pharmaCompanyId">
+    	<option th:each="company: ${companies}"
+    			 th:text="${company.getCompanyName()}"
+    			 th:value="${company.getSysId()}"/>
+    </select>
+    
     </tr>
     <tr>
-     <th>drugCategory</th>
-     <td><input type="text" name="drugCategory"></td>
-    </tr>
-    <tr>
-     <th>approved</th>
-     <td><input type="checkbox" name="active"></td>
+	<th>drugCategory</th>
+     <td>
+     
+     	<select name="drugCategoryId">
+     		<option th:each="category: ${categories}"
+     		th:text="${category.getCategoryName()}"
+     		th:value="${category.getSysId()}">
+     	</select>
+     	
+     </td>
     </tr>
     <tr>
      <th></th>

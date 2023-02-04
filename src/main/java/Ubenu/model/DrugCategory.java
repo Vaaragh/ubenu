@@ -3,7 +3,7 @@ package Ubenu.model;
 public class DrugCategory {
 	
 	private String sysId;
-	private String categoryName; //sysId equivalent?
+	private String categoryName;
 	private String useCase;
 	private String description;
 	
@@ -54,10 +54,7 @@ public class DrugCategory {
 
 
 
-	@Override
-	public String toString() {
-		return "DrugCategory [categoryName=" + categoryName + "]";
-	}
+
 	
 	
 	

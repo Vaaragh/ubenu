@@ -18,8 +18,8 @@ public class DrugCategoryService {
 		return repo.findAll();
 	}
 	
-	public void save(String categoryName, String useCase, String description) {
-		repo.save(categoryName, useCase, description);
+	public void save(DrugCategory drugCategory) {
+		repo.save(drugCategory);
 	}
 	
 	public void update(DrugCategory drugCategory) {

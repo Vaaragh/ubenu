@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>Categories</title>
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/TableStyles.css"/>	
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/HorizontalMenuStyles.css"/>	
+
+</head>
+<body>
+<ul>
+   <li><a href="/Ubenu/companies">Companies</a></li>
+   <li><a href="/Ubenu/registration">Registration</a></li>
+   <li><a href="/Ubenu/companies/add">Add New Company</a></li>
+   <li><a href="/Ubenu/drugs">Drugs</a></li>
+  
+  </ul>
+  <table>
+   <caption>
+   Categories
+   </caption>
+   <thead>
+   <tr>
+    <th>Name</th>
+    <th>Use Case</th>
+   </tr>
+  </thead>
+  <tbody>
+  	<tr th:each="category : ${categories}">
+		<td>
+		<a type="button" th:href="|categories/details?sysId=${category.getSysId()}|" th:text="${category.getCategoryName()}"></a>
+		</td>
+		<td th:text="${category.getUseCase()}"></td> 
+		<td>
+		<form action="categories/delete" method="post">
+		<input type="hidden" th:value="${category.getSysId()}" name="sysId">
+		<input type="submit" value="Delete">
+		</form></td>		
+  
+  	</tr>
+  
+  </tbody>
+  </table>
+</body>
+</html>

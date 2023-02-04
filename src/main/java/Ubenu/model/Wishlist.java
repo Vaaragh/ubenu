@@ -1,18 +1,30 @@
 package Ubenu.model;
 
-import Ubenu.model.utilities.IdGen;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Wishlist {
 	
-	private String sysId;
-
-	public Wishlist() {
-		this.sysId = IdGen.newID();
-	}
+	private List<Drug> drugList;
 	
-	public Wishlist(String sysId) {
-		this.sysId = sysId;
+	
+	public Wishlist() {
+		this.drugList = new ArrayList<Drug>();
 	}
+
+	public Wishlist(List<Drug> drugList) {
+		this.drugList = drugList;
+	}
+
+	public List<Drug> getDrugList() {
+		return drugList;
+	}
+
+	public void setDrugList(List<Drug> drugList) {
+		this.drugList = drugList;
+	}
+
+
 	
 	
 

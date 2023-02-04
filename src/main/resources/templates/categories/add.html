@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>Category</title>
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/TableStyles.css"/>	
+<link rel="stylesheet" type="text/css" href="/Ubenu/css/HorizontalMenuStyles.css"/>	
+
+</head>
+<body>
+<ul>
+   <li><a href="/Ubenu/companies">Companies</a></li>
+   <li><a href="/Ubenu/registration">Registration</a></li>
+   <li><a href="/Ubenu/companies/add">Add New Company</a></li>
+  
+  </ul>
+<form method="post" action="add">
+   <table>
+    <caption>
+     Drug Category
+    </caption>
+    <tbody><tr>
+     <th>Name</th>
+     <td><input type="text" name="categoryName"></td>
+    </tr>
+    <tr>
+     <th>Use Case</th>
+     <td><input type="text" name="useCase" ></td>
+    </tr>
+     <tr>
+     <th>Description</th>
+     <td><textarea cols="50" rows="5" style="resize:none;" name="description"></textarea></td>
+    </tr>
+    <tr>
+     <th></th>
+     <td><input type="submit"></td>
+    </tr>
+   </tbody></table>
+  </form>
+
+</body>
+</html>

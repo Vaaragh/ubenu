@@ -38,7 +38,7 @@ public class DrugRepo {
 			String description = rs.getString(index++);
 			String contra = rs.getString(index++);
 			EDrugFormulation form = EDrugFormulation.valueOf(rs.getString(index++));
-			float rating = rs.getFloat(index++);
+			float rating = 0;
 			String image = rs.getString(index++);
 			int inventory = rs.getInt(index++);
 			float price = rs.getFloat(index++);
@@ -69,11 +69,19 @@ public class DrugRepo {
 	}
 	
 	public List<Drug> findAll(){
-		String sql = "SELECT id, title, drugCode, descript, contra, form, rating, image, inventory, price, company_id, category_id, approved FROM Drug";
+		String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug";
 		return db.query(sql, new RowMap());
 	}
+	
+	public List<Drug> findWishlist(String userId){
+		String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE id in (Select drug_id From wishlist where user_id=?);";
+		
+		return db.query(sql, new RowMap(), userId);
+		
+	}	
+	
 	 public Drug findOne(String sysId) {
-			String sql = "SELECT id, title, drugCode, descript, contra, form, rating, image, inventory, price, company_id, category_id, approved FROM Drug WHERE id=?";
+			String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE id=?";
 			return db.queryForObject(sql, new RowMap(), sysId);
 	 }
 	 
@@ -82,18 +90,18 @@ public class DrugRepo {
 		 db.update(sql,sysId);
 	 }
 	 
-	 public void update(String sysId, String drugName, String drugCode, String drugDescription, String contraindications,
-				String drugFormulation, float rating, String imagePath, int inventory, float price,
-				String pharmaCompany, String drugCategory, boolean active) {
-		 String sql = "UPDATE Drug SET title=?, drugCode=?, descript=?, contra=?, form=?, rating=?, image=?, inventory=?, price=?, company_id=?, category_id=?, approved=? WHERE id=?";
-		 db.update(sql, drugName, drugCode, drugDescription, contraindications, drugFormulation, rating, imagePath, inventory, price, pharmaCompany, drugCategory, active, sysId);
+	 
+	 public void update(Drug drug) {
+		 String sql = "UPDATE Drug SET title=?, drugCode=?, descript=?, contra=?, form=?, image=?, inventory=?, price=?, company_id=?, category_id=?, approved=? WHERE id=?";
+		 db.update(sql, drug.getDrugName(), drug.getDrugCode(), drug.getDrugDescription(), drug.getContraindications(), drug.getDrugFormulation().toString(), drug.getImagePath(), drug.getInventory(), drug.getPrice(), drug.getPharmaCompany().getSysId(), drug.getDrugCategory().getSysId(), drug.isActive(), drug.getSysId());
+
 	 }
 	 
-	 public void save(String drugName, String drugCode, String drugDescription, String contraindications,
-			String drugFormulation, float rating, String imagePath, int inventory, float price,
-			String pharmaCompany, String drugCategory, boolean active) {
-		 String sql = "INSERT INTO Drug (id, title, drugCode, descript, contra, form, rating, image, inventory, price, company_id, category_id, approved) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		 db.update(sql, IdGen.newID(), drugName, drugCode, drugDescription, contraindications, drugFormulation, rating, imagePath, inventory, price, pharmaCompany, drugCategory, active);
+	 
+	 public void save(Drug drug) {
+		 String sql = "INSERT INTO Drug (id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		 db.update(sql, IdGen.newID(), drug.getDrugName(), drug.getDrugCode(), drug.getDrugDescription(), drug.getContraindications(), drug.getDrugFormulation().toString(), drug.getImagePath(), drug.getInventory(), drug.getPrice(), drug.getPharmaCompany().getSysId(), drug.getDrugCategory().getSysId(), drug.isActive());
+
 	 }
 	
 	

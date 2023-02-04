@@ -7,12 +7,20 @@ import org.springframework.stereotype.Service;
 
 import Ubenu.dao.DrugRepo;
 import Ubenu.model.Drug;
+import Ubenu.model.DrugCategory;
+import Ubenu.model.PharmaCompany;
 
 @Service
 public class DrugService {
 	
 	@Autowired
 	private DrugRepo repo;
+	
+	@Autowired
+	private PharmaCompanyService companyServ;
+	
+	@Autowired
+	private DrugCategoryService categServ;
 	
 	public List<Drug> findAll(){
 		return repo.findAll();
@@ -22,21 +30,33 @@ public class DrugService {
 		return repo.findOne(sysId);
 	}
 	
-	public void update(String sysId, String drugName, String drugCode, String drugDescription, String contraindications,
-			String drugFormulation, float rating, String imagePath, int inventory, float price,
-			String pharmaCompany, String drugCategory, boolean active) {
-		repo.update(sysId, drugName, drugCode, drugDescription, contraindications, drugFormulation, rating, imagePath, inventory, price, pharmaCompany, drugCategory, active);
+	
+	public void update(Drug drug, String category, String company) {
+		DrugCategory cat = categServ.findOne(category);
+		PharmaCompany comp = companyServ.findOne(company);
+		
+		drug.setDrugCategory(cat);
+		drug.setPharmaCompany(comp);
+		
+		repo.update(drug);
+		
 	}
 	
 	public void delete(String sysId) {
 		repo.delete(sysId);
 	}
 	
-	public void save(String drugName, String drugCode, String drugDescription, String contraindications,
-			String drugFormulation, float rating, String imagePath, int inventory, float price,
-			String pharmaCompany, String drugCategory, boolean active) {
-		repo.save(drugName, drugCode, drugDescription, contraindications, drugFormulation, rating, imagePath, inventory, price, pharmaCompany, drugCategory, active);
+	public void save(Drug drug, String category, String company) {
+		
+		DrugCategory cat = categServ.findOne(category);
+		PharmaCompany comp = companyServ.findOne(company);
+		
+		drug.setDrugCategory(cat);
+		drug.setPharmaCompany(comp);
+		
+		repo.save(drug);
 	}
+	
 		 
 	
 }

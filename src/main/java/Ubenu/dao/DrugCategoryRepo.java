@@ -40,23 +40,23 @@ public class DrugCategoryRepo {
 		return db.query(sql, new RowMap());
 	}
 	
-	public void save(String categoryName, String useCase, String description) {
+	public void save(DrugCategory dc) {
 		String sql = "insert into DrugCategory (id, title, useCase, descript) VALUES (?, ?, ?, ?);";
-		db.update(sql, IdGen.newID(), categoryName, useCase, description);
+		db.update(sql, IdGen.newID(), dc.getCategoryName(), dc.getUseCase(), dc.getDescription());
 	}
 	
 	public void update(DrugCategory drug) {
-		String sql = "UPDATE DrugCategory SET title=? useCase=?, descript=? WHERE id=?";
+		String sql = "UPDATE DrugCategory SET title=?, useCase=?, descript=? WHERE id=?;";
 		db.update(sql, drug.getCategoryName(), drug.getUseCase(), drug.getDescription(), drug.getSysId());
 	}
 	
 	public void delete(String sysId) {
-		String sql = "DELETE FROM DrugCategory WHERE id=?";
+		String sql = "DELETE FROM DrugCategory WHERE id=?;";
 		db.update(sql, sysId);
 	}
 	
 	public DrugCategory findOne(String sysId) {
-		String sql = "SELECT id, title,useCase, descript FROM DrugCategory WHERE id=?";
+		String sql = "SELECT id, title, useCase, descript FROM DrugCategory WHERE id=?;";
 		return db.queryForObject(sql, new RowMap(), sysId);
 	}
 	

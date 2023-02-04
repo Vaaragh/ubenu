@@ -29,20 +29,15 @@ public class UserService {
 		repo.delete(sysId);
 	}
 	
-	public void save(String username, String password, String email, String firstName, String lastName,
-			String dateOfBirth, String address, String phoneNumber)
-	{
-		
-		repo.save(username, password, email, firstName, lastName, LocalDate.parse(dateOfBirth), address, phoneNumber, LocalDateTime.now(), "CUSTOMER", true);
+	
+	public void save(User user) {
+		repo.save(user);
 	}
 	
-	public void update(String sysId, String username, String password, String email, String firstName, String lastName,
-			String dateOfBirth, String address, String phoneNumber, String registartionDateTime, String role) {
-		repo.update(sysId, username, password, email, firstName, lastName, LocalDate.parse(dateOfBirth), address, phoneNumber, LocalDateTime.parse(registartionDateTime),ERole.valueOf(role));
+	
+	public void update(User user) {
+		repo.update(user);
 	}
 	
-	public User login(String username, String password) {
-		return repo.login(username, password);
-	}
 	
 }
