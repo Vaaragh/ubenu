@@ -10,9 +10,10 @@
 </head>
 <body>
 <ul>
-   <li><a href="/Ubenu/companies">Companies</a></li>
-   <li><a href="/Ubenu/users/register">Registration</a></li>
-   <li><a href="/Ubenu/companies/add">Add New Company</a></li>
+	<li th:hidden="${session.role!='admin'}"><a href="/Ubenu/users" >Users</a></li>
+   	<li><a href="/Ubenu/companies">Companies</a></li>
+   	<li><a href="/Ubenu/users/register">Registration</a></li>
+   	<li><a href="/Ubenu/companies/add">Add New Company</a></li>
   
   </ul>
 
@@ -23,35 +24,35 @@
     </caption>
     <tbody><tr>
      <th>Username</th>
-     <td><input type="text" name="username" th:value="${user.getUsername()}"></td>
+     <td><input type="text" name="username" th:value="${user.username}"></td>
     </tr>
     <tr>
      <th>Password</th>
-     <td><input type="password" name="password"></td>
+     <td><input type="password" name="password" th:value="${user.password}"></td>
     </tr>
     <tr>
      <th>Email</th>
-     <td><input type="text" name="email"></td>
+     <td><input type="text" name="email" th:value="${user.email}"></td>
     </tr>
     <tr>
      <th>First Name</th>
-     <td><input type="text" name="firstName"></td>
+     <td><input type="text" name="firstName" th:value="${user.firstName}"></td>
     </tr>
     <tr>
      <th>Last Name</th>
-     <td><input type="text" name="lastName"></td>
+     <td><input type="text" name="lastName" th:value="${user.lastName}"></td>
     </tr>
     <tr>
      <th>Date of Birsh</th>
-     <td><input type="date" name="dateOfBirth" max="2004-01-01" id="dob"></td>
+     <td><input type="date" name="dateOfBirth" max="2004-01-01" id="dob" th:value="${user.dateOfBirth}"></td>
     </tr>
     <tr>
      <th>Address</th>
-     <td><input type="text" name="address"></td>
+     <td><input type="text" name="address" th:value="${user.address}"></td>
     </tr>
     <tr>
      <th>Phone Number</th>
-     <td><input type="text" name="phoneNumber"></td>
+     <td><input type="text" name="phoneNumber" th:value="${user.phoneNumber}"></td>
     </tr>
     <tr>
      <th></th>

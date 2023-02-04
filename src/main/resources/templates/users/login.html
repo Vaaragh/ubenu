@@ -15,22 +15,22 @@
    <li><a href="/Ubenu/companies/add">Add New Company</a></li>
   
   </ul>
-<form method="post" action="login">
+<form method="POST" action="">
    <table>
     <caption>
      Login
     </caption>
     <tbody><tr>
-     <th>Username</th>
+     <th th:text="#{form.username.label}">Username</th>
      <td><input type="text" name="username"></td>
     </tr>
     <tr>
-     <th>Password</th>
+     <th  th:text="#{form.password.label}">Password</th>
      <td><input type="text" name="password"></td>
     </tr>
     <tr>
      <th></th>
-     <td><input type="submit"></td>
+     <td><input type="submit" th:value="#{submit.button.name}"></td>
     </tr>
    </tbody></table>
   </form>
