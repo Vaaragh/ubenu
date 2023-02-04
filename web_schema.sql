@@ -10,6 +10,10 @@ INSERT INTO PharmaCompany (id, title, country) VALUES ('223e4267-e89b-12d3-a456-
 INSERT INTO PharmaCompany (id, title, country) VALUES ('123e4367-e89b-12d3-a456-426614174020','Primer 2', 'HUN');
 INSERT INTO PharmaCompany (id, title, country) VALUES ('123e4467-e89b-12d3-a456-426614174100','Primer 3', 'DEU');
 
+INSERT INTO PharmaCompany (id, title, country) VALUES ('pc1','Hemofarm', 'SRB');
+INSERT INTO PharmaCompany (id, title, country) VALUES ('pc2','Primer 2', 'HUN');
+INSERT INTO PharmaCompany (id, title, country) VALUES ('pc3','Primer 3', 'DEU');
+
 
 
 CREATE TABLE DrugCategory (
@@ -21,6 +25,9 @@ CREATE TABLE DrugCategory (
 );
 insert into DrugCategory (id, title, useCase, descript) VALUES ('123e4567-e89b-12s3-a456-426614174108', 'analgetik', 'kod bolova i upala', 'lekovi protiv bolova');
 insert into DrugCategory (id, title, useCase, descript) VALUES ('123e4567-e89b-12d3-a426-426614174100', 'steroid', 'kod upala', 'lekovi protiv upala');
+
+insert into DrugCategory (id, title, useCase, descript) VALUES ('dc1', 'analgetik', 'kod bolova i upala', 'lekovi protiv bolova');
+insert into DrugCategory (id, title, useCase, descript) VALUES ('dc2', 'steroid', 'kod upala', 'lekovi protiv upala');
 
 
 
@@ -39,15 +46,21 @@ CREATE TABLE Drug (
     approved boolean not null,
     PRIMARY KEY (id),
     FOREIGN KEY (company_id) REFERENCES PharmaCompany(id),
-    FOREIGN KEY (category_id) REFERENCES DrugCategory(id)    
+    FOREIGN KEY (category_id) REFERENCES DrugCategory(id)  
 );
 INSERT INTO Drug (id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved)
  values ('423e4567-e89b-12d3-a456-426614174000', 'title', 'asdfghytrewqui', 'opis', 'contra', 'SYRUP', 'https://www.drugs.com/images/pills/fio/ACC03010/trazodone-hydrochloride.JPG',
  20, 320,'223e4267-e89b-12d3-a456-426614174000' , '123e4567-e89b-12s3-a456-426614174108', true);
- 
  INSERT INTO Drug (id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved)
  values ('523e4567-e89b-12d3-a456-4266f4174000', 'title 2', 'asdfghytrewqui', 'opis', 'contra', 'SYRUP', 'https://www.drugs.com/images/pills/fio/ACC03010/trazodone-hydrochloride.JPG',
  20, 320,'223e4267-e89b-12d3-a456-426614174000' , '123e4567-e89b-12s3-a456-426614174108', true);
+ 
+  INSERT INTO Drug (id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved)
+ values ('d1', 'title 2', 'asdfghytrewqui', 'opis', 'contra', 'SYRUP', 'https://www.drugs.com/images/pills/fio/ACC03010/trazodone-hydrochloride.JPG',
+ 20, 320,'pc1' , 'dc1', true);
+   INSERT INTO Drug (id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved)
+ values ('d2', 'title 2', 'asdfghytrewqui', 'opis', 'contra', 'SYRUP', 'https://www.drugs.com/images/pills/fio/ACC03010/trazodone-hydrochloride.JPG',
+ 20, 320,'pc2' , 'dc1', true);
 
 
 CREATE TABLE ShoppingItem(
@@ -59,6 +72,9 @@ CREATE TABLE ShoppingItem(
 	);
 INSERT INTO ShoppingItem (id, drug_id, amount) VALUES ('a23e4567-e89b-12d3-a456-426614174000','523e4567-e89b-12d3-a456-4266f4174000', 5); 
 INSERT INTO ShoppingItem (id, drug_id, amount) VALUES ('b23e4567-e89b-12d3-a456-426614174000','523e4567-e89b-12d3-a456-4266f4174000', 2); 
+
+INSERT INTO ShoppingItem (id, drug_id, amount) VALUES ('si1','d1', 5); 
+INSERT INTO ShoppingItem (id, drug_id, amount) VALUES ('si2','d1', 2); 
 
 
 
@@ -77,6 +93,26 @@ CREATE TABLE UserTable (
     active boolean not null,
     PRIMARY KEY (id)
     );
+    
+
+CREATE TABLE CustomerOrder (
+	id varchar(36) not null unique,
+    date_of date not null,
+    user_id varchar(36) not null,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES UserTable(id)
+	);
+    
+    
+    
+CREATE TABLE CustomerOrderItems (
+    order_id varchar(36) not null,
+	item_id varchar(36) not null,
+    FOREIGN KEY (order_id) REFERENCES CustomerOrder(id),
+    FOREIGN KEY (item_id) REFERENCES ShoppingItem(id)
+    );
+
+
     
 
 CREATE TABLE Comment (
@@ -99,9 +135,11 @@ CREATE TABLE Wishlist (
     );
     
 CREATE TABLE LoyaltyCard (
-	user_id varchar(36) not null,
+	user_id varchar(36) not null unique,
 	points int,
-    discount int
+    discount float,
+    approved boolean,
+    FOREIGN KEY (user_id) REFERENCES UserTable(id)
     );
     
 
@@ -111,6 +149,8 @@ INSERT INTO UserTable (id, username, password, email, firstName, lastName, dateO
 VALUES ('111e4567-e89b-12d3-a456-4266f4222000', 'username2', 'password2', 'email2', 'name2','last name2','1994-06-11','address2','123', '2023-01-05 15:15:00', 'CUSTOMER', true);
 
 
+INSERT INTO UserTable (id, username, password, email, firstName, lastName, dateOfBirth, address, phoneNumber,registrationDateTime, role, active)
+VALUES ('u3', 'admin', 'admin', 'email2', 'name2','last name2','1994-06-11','address2','123', '2023-01-05 15:15:00', 'ADMIN', true);
 
 
 
@@ -122,7 +162,7 @@ INSERT INTO wishlist(user_id, drug_id) VALUES ('111e4567-e89b-12d3-a456-4266f411
 
 SELECT id, title, drugCode, descript, contra, form, rating, image, inventory, price, company_id, category_id, approved FROM Drug WHERE id in (Select drug_id From wishlist where user_id='111e4567-e89b-12d3-a456-4266f4111000');
 
-SELECT * from drug;
+SELECT * from UserTable;
 
 select * from wishlist;
 
