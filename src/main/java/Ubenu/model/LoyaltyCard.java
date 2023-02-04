@@ -1,23 +1,40 @@
 package Ubenu.model;
 
-import Ubenu.model.utilities.IdGen;
-
 public class LoyaltyCard {
 	
-	private String sysId;
+	private User user;
 	private int numberOfPoints;
 	private float discountPerPoint;
-	private boolean active;
 	
 	
 	public LoyaltyCard() {
-		this.sysId = IdGen.newID();
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public int getNumberOfPoints() {
+		return numberOfPoints;
 	}
 	
-	public LoyaltyCard(String sysId) {
-		this.sysId = sysId;
+	public void setNumberOfPoints(int numberOfPoints) {
+		this.numberOfPoints = numberOfPoints;
 	}
-	
-	
+
+
+	public float getDiscountPerPoint() {
+		return discountPerPoint;
+	}
+
+
+	public void setDiscountPerPoint(float discountPerPoint) {
+		this.discountPerPoint = discountPerPoint;
+	}
 
 }
