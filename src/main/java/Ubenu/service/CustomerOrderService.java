@@ -23,8 +23,12 @@ public class CustomerOrderService {
 		return repo.findForCustomer(userId);
 	}
 	
-	public void save(CustomerOrder order, String userId) {
-		repo.save(order, userId);
+	public void save(CustomerOrder order, String userId, String orderId) {
+		repo.save(order, userId, orderId);
+	}
+	
+	public CustomerOrder findOne(String orderId) {
+		return repo.findOne(orderId);
 	}
 	
 }

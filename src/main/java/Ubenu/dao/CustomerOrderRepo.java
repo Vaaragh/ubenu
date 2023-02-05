@@ -62,14 +62,15 @@ public class CustomerOrderRepo {
 		return db.queryForObject(sql, new RowMap(), sysId);
 	}
 	
-	public void save(CustomerOrder o, String userId) {
-		String sql2 = "INSERT INTO CustomerOrder (id, date_od, user_id) VALUES (?,?,?); ";
-		db.update(sql2, IdGen.newID(), LocalDate.now(), userId);
+	public void save(CustomerOrder o, String userId, String orderId) {
+		String sql2 = "INSERT INTO CustomerOrder (id, date_of, user_id) VALUES (?,?,?); ";
+		db.update(sql2, orderId, LocalDate.now(), userId);
 		
 		for (ShoppingItem item : o.getItems()) {
-			siServ.save(item, item.getDrug().getSysId());
+			String itemId = IdGen.newID();
+			siServ.save(item, item.getDrug().getSysId(), itemId);
 			String sql = "INSERT INTO CustomerOrderItems (order_id, item_id) VALUES (?,?);";
-			db.update(sql, o.getSysId(), item.getSysId());
+			db.update(sql, orderId, itemId);
 		}
 	}
 	

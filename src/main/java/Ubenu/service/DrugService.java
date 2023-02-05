@@ -47,6 +47,11 @@ public class DrugService {
 		
 	}
 	
+	public void reduce(Drug drug, int amount) {
+		drug.setInventory(drug.getInventory()-amount);
+		repo.update(drug);
+	}
+	
 	public void approve(String sysId) {
 		repo.approve(sysId);
 	}

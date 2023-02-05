@@ -30,10 +30,12 @@ public class ShoppingItemService {
 		return repo.findForOrder(sysId);
 	}
 	
-	public void save(ShoppingItem ite, String drugId) {
+	public void save(ShoppingItem ite, String drugId, String ItemId) {
 		Drug drug = drugServ.findOne(drugId);
 		ite.setDrug(drug);
-		repo.save(ite);		
+		ite.setSysId(ItemId);
+		repo.save(ite);	
+		drugServ.reduce(drug, ite.getAmount());
 	}
 	
 	public void update(ShoppingItem ite, String drugId) {

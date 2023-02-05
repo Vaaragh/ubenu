@@ -68,7 +68,7 @@ public class ShoppingItemRepo {
 	
 	public void save(ShoppingItem s) {
 		String sql = "INSERT INTO ShoppingItem (id, drug_id, amount) VALUES (?,?,?);";
-		db.update(sql,IdGen.newID(), s.getDrug().getSysId(), s.getAmount());
+		db.update(sql, s.getSysId(), s.getDrug().getSysId(), s.getAmount());
 	}
 	
 	public void update(ShoppingItem s) {

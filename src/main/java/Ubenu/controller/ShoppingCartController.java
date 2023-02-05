@@ -2,18 +2,23 @@ package Ubenu.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import Ubenu.model.CustomerOrder;
 import Ubenu.model.ShoppingItem;
+import Ubenu.model.User;
+import Ubenu.model.utilities.IdGen;
 import Ubenu.service.CustomerOrderService;
 import Ubenu.service.LoyaltyCardService;
 import Ubenu.service.ShoppingItemService;
@@ -33,7 +38,19 @@ public class ShoppingCartController {
 	private LoyaltyCardService cardServ;
 	
 	@GetMapping("")
-	public String index(HttpSession session) {
+	public String index(HttpSession session, Model model) {
+		
+		List<ShoppingItem> list = (List<ShoppingItem>) session.getAttribute("shoppingCart");
+		int total = 0;
+		if (!list.isEmpty()) {
+			for (int i=0;i<list.size();i++) {
+				total += list.get(i).getAmount()*list.get(i).getDrug().getPrice();
+			}
+			
+		}
+		model.addAttribute("total", total);
+		
+		
 		return "shoppingCart/index";
 	}
 	
@@ -81,5 +98,16 @@ public class ShoppingCartController {
 		response.sendRedirect("/Ubenu/shoppingCart");	
 	}
 	
-	
+	@PostMapping("/checkout")
+	public void checkout(HttpSession session, HttpServletResponse response) throws IOException {
+		String userId =((User) session.getAttribute("user")).getSysId();
+		List<ShoppingItem> listItems = (List<ShoppingItem>) session.getAttribute("shoppingCart");
+		String orderId = IdGen.newID();
+		CustomerOrder order = new CustomerOrder();
+		
+		order.setItems(listItems);
+		orderServ.save(order, userId, orderId);
+		session.setAttribute("shoppingCart", new ArrayList<ShoppingItem>());
+		response.sendRedirect("/Ubenu/shoppingCart");		
+	}
 }
