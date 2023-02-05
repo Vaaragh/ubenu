@@ -16,59 +16,87 @@
    	<li><a href="/Ubenu/companies/add">Add New Company</a></li>
   
   </ul>
+  
+  <div>
+  <table  th:unless="${session.loyalty==null}">
+  <th th:text="#{loyalty.points.label}">Loyalty Points</th>
+  <td th:text="${session.loyalty.numberOfPoints.toString()}"></td>
+  </table>
+  <div th:unless="${session.cardRequest}">
+  <form method="post" action="requestCard">
+<input type="hidden" name="userCardId" th:value="${user.sysId}">
+		<input type="submit" value="request">
+
+  </form>
+  
+  </div>
+ 
+ 
+ </div>
 
 <form method="post" action="update">
+<input type="hidden" name="sysId" th:value="${user.sysId}">
    <table>
-    <caption>
-     Welcome
-    </caption>
+<br>
     <tbody><tr>
-     <th>Username</th>
+     <th th:text="#{form.username.label}">Username</th>
      <td><input type="text" name="username" th:value="${user.username}"></td>
     </tr>
     <tr>
-     <th>Password</th>
+     <th th:text="#{form.password.label}">Password</th>
      <td><input type="password" name="password" th:value="${user.password}"></td>
     </tr>
     <tr>
-     <th>Email</th>
+     <th th:text="#{form.email.label}">Email</th>
      <td><input type="text" name="email" th:value="${user.email}"></td>
     </tr>
     <tr>
-     <th>First Name</th>
+     <th th:text="#{form.firstName.label}">First Name</th>
      <td><input type="text" name="firstName" th:value="${user.firstName}"></td>
     </tr>
     <tr>
-     <th>Last Name</th>
+     <th th:text="#{form.lastName.label}">Last Name</th>
      <td><input type="text" name="lastName" th:value="${user.lastName}"></td>
     </tr>
     <tr>
-     <th>Date of Birsh</th>
-     <td><input type="date" name="dateOfBirth" max="2004-01-01" id="dob" th:value="${user.dateOfBirth}"></td>
+     <th th:text="#{form.dob.label}">Date of Birsh</th>
+     <td><input type="date" name="dateOfBirthString" max="2004-01-01" id="dob" th:value="${user.dateOfBirth}"></td>
     </tr>
     <tr>
-     <th>Address</th>
+     <th th:text="#{form.address.label}">Address</th>
      <td><input type="text" name="address" th:value="${user.address}"></td>
     </tr>
     <tr>
-     <th>Phone Number</th>
+     <th th:text="#{form.phoneNumber.label}">Phone Number</th>
      <td><input type="text" name="phoneNumber" th:value="${user.phoneNumber}"></td>
     </tr>
     <tr>
      <th></th>
-     <td><input type="submit" id="submitChoice"></td>
+     <td><input type="submit" id="submitChoice" th:value="#{submit.button.name}"></td>
     </tr>
    </tbody></table>
   </form>
-  <form method="post" action="updateWishlist">
+
   <table>
-  <div th:unless="${#lists.isEmpty(wishlist)}">
-  <tr th:each="drug : ${wishlist}">
-  	<td th:text="${drug.getDrugName()}"></td>
+  <div th:unless="${session.wishlist.isEmpty()}" >
+  <tr th:each="drug : ${session.wishlist}">  	
+  	<td>
+		<a type="button" th:href="|drugs/details?sysId=${drug.getSysId()}|" th:text="${drug.getDrugName()}"></a>
+	</td>
+	
+	<td>
+		<form action="removeWish" method="post">
+		<input type="hidden" th:value="${drug.getSysId()}" name="drugSysId">
+		<input type="hidden" th:value="${user.sysId}" name="sysId">
+		
+		<input type="submit" value="remove">
+		</form>
+	</td>	
+	  	
   </tr>
   </table>
   </div>
-  </form>
+
   
   
 </body>

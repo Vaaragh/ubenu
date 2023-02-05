@@ -36,10 +36,11 @@
 		<td th:text="${user.getEmail()}"></td> 
   		<td th:text="${user.getAddress()}"></td> 
 		<td th:text="${user.getPhoneNumber()}"></td>
-		<td>
-		<form action="users/delete" method="post">
+		
+		<td th:hidden="${user.getRole().toString()=='ADMIN'}">
+		<form action="users/block" method="post">
 		<input type="hidden" th:value="${user.getSysId()}" name="sysId">
-		<input type="submit" value="Delete">
+		<input type="submit" th:value="${user.active ? 'Block' : 'Unblock'}">
 		</form></td>		
   
   	</tr>

@@ -134,6 +134,16 @@ CREATE TABLE Wishlist (
     FOREIGN KEY (drug_id) REFERENCES drug(id)
     );
     
+    
+    select * from usertable;
+    select * from loyaltyCard;
+    Update LoyaltyCard Set approved=1;
+    DELETE FROM loyaltyCard;	
+    
+    INSERT INTO wishlist(user_id, drug_id) VALUES ('8c72fae8-6008-40dc-a51f-409447ce53f4','d67e832a-54cb-4323-a776-9156ad352a58');
+    INSERT INTO wishlist(user_id, drug_id) VALUES ('8c72fae8-6008-40dc-a51f-409447ce53f4','ecd1ed94-74ba-4b5b-898c-81591b5e2f98');
+
+    
 CREATE TABLE LoyaltyCard (
 	user_id varchar(36) not null unique,
 	points int,
@@ -152,6 +162,8 @@ VALUES ('111e4567-e89b-12d3-a456-4266f4222000', 'username2', 'password2', 'email
 INSERT INTO UserTable (id, username, password, email, firstName, lastName, dateOfBirth, address, phoneNumber,registrationDateTime, role, active)
 VALUES ('u3', 'admin', 'admin', 'email2', 'name2','last name2','1994-06-11','address2','123', '2023-01-05 15:15:00', 'ADMIN', true);
 
+INSERT INTO UserTable (id, username, password, email, firstName, lastName, dateOfBirth, address, phoneNumber,registrationDateTime, role, active)
+VALUES ('u4', 'merch', 'merch', 'email2', 'name2','last name2','1994-06-11','address2','123', '2023-01-05 15:15:00', 'ADMIN', true);
 
 
 

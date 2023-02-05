@@ -95,10 +95,19 @@
     </tr>
     <tr>
      <th></th>
-     <td><input type="submit"></td>
+     <td><input type="submit" th:hidden="${session.role.equals('customer')}"></td>
     </tr>
    </tbody></table>
   </form>
+  <br>
+	<div th:if="${session.role.equals('customer')}">
+		<form action="addWish" method="post">
+		<input type="hidden" th:value="${drug.getSysId()}" name="drugId">
+		<input type="hidden" th:value="${session.user.sysId}" name="userId">
+		
+		<input type="submit" value="Add to Wishlist">
+		</form>
+	</div>
 
 </body>
 </html>

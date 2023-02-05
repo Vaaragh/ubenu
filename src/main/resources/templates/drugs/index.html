@@ -37,14 +37,17 @@
 		</td>
 		<td th:text="${drug.getRating()}"></td> 
 		<td th:text="${drug.getPrice()}"></td>
-		<td>
+		
+		<td th:hidden="!${session.role.equals('admin')}">
 		<form action="drugs/delete" method="post">
 		<input type="hidden" th:value="${drug.getSysId()}" name="sysId">
 		<input type="submit" value="Delete">
-		</form></td>	
-		<td th:hidden="${session.role!='admin'}">
+		</form></td>
+		
+			
+		<td th:hidden="${!session.role.equals('merchant') || drug.isActive()}">
 		<form action="drugs/approve" method="post">
-		<input type="hidden" th:value="${drug.getSysId()}" name="sysId">
+		<input type="hidden" th:value="${drug.getSysId()}" name="sysApproveId">
 		<input type="submit" value="Approve">
 		</form></td>		
   
