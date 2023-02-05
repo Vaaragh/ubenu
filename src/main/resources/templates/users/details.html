@@ -10,12 +10,25 @@
 </head>
 <body>
 <ul>
-	<li th:hidden="${session.role!='admin'}"><a href="/Ubenu/users" >Users</a></li>
-   	<li><a href="/Ubenu/companies">Companies</a></li>
-   	<li><a href="/Ubenu/users/register">Registration</a></li>
-   	<li><a href="/Ubenu/companies/add">Add New Company</a></li>
-  
-  </ul>
+
+   <li th:hidden="${!session.role.equals('admin')}" ><a href="/Ubenu/companies" th:text="#{link.company.label}">Companies</a></li>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/companies/add" th:text="#{link.company.add}">Add Company</a></li>
+   <br>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/categories" th:text="#{link.category.label}">Categories</a></li>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/categories/add" th:text="#{link.category.add}">Add Category</a></li>
+   <br>
+   <li><a href="/Ubenu/drugs" th:text="#{link.drug.label}">Drugs</a></li>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/drugs/add" th:text="#{link.drug.add}">Add Drug</a></li>
+   <br>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/users" th:text="#{link.users.label}">Users</a></li>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/loyaltyCards" th:text="#{link.loyalty.label}">Cards</a></li>
+   <br>
+   <li th:hidden="${!session.role.equals('customer')}"><a href="/Ubenu/shoppingCart" th:text="#{link.cart.label}">Shopping Cart</a></li>
+   <br>
+   <li><a href="/Ubenu/users/login" th:text="#{link.logout.label}">Logout</a></li>
+   
+
+</ul>
   
   <div>
   <table  th:unless="${session.loyalty==null}">
@@ -81,7 +94,7 @@
   <div th:unless="${session.wishlist.isEmpty()}" >
   <tr th:each="drug : ${session.wishlist}">  	
   	<td>
-		<a type="button" th:href="|drugs/details?sysId=${drug.getSysId()}|" th:text="${drug.getDrugName()}"></a>
+		<a type="button" th:href="|/Ubenu/drugs/details?sysId=${drug.getSysId()}|" th:text="${drug.getDrugName()}"></a>
 	</td>
 	
 	<td>

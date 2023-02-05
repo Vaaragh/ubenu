@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>Companies</title>
+<title>Shopping Cart</title>
 <link rel="stylesheet" type="text/css" href="/Ubenu/css/TableStyles.css"/>	
 <link rel="stylesheet" type="text/css" href="/Ubenu/css/HorizontalMenuStyles.css"/>	
 
@@ -29,26 +29,46 @@
    
 
 </ul>
-<form method="post" action="update">
-	<input type="hidden" name="sysId" th:value="${company.getSysId()}">
-   <table>
-    <caption>
-     Pharmaceutical Company
-    </caption>
-    <tbody><tr>
-     <th>Name</th>
-     <td><input type="text" name="companyName" id="nameField" th:value="${company.getCompanyName()}"></td>
-    </tr>
-    <tr>
-     <th>HQ</th>
-     <td><input type="text" name="country" id="hqField" minlength="3" maxlength="3" th:value="${company.getCountry()}" ></td>
-    </tr>
-    <tr>
-     <th></th>
-     <td><input type="submit"></td>
-    </tr>
-   </tbody></table>
-  </form>
+  <table>
+   <thead>
+   <tr>
+    <th>Name</th>
+    <th>Qty</th>
+    <th>Price</th>
+    <th>Total</th>
+   </tr>
+  </thead>
+  <tbody th:unless="${session.shoppingCart.isEmpty()}">
+  	<tr th:each="item : ${session.shoppingCart}">
 
+		<td>
+		<a type="button" th:href="|drugs/details?sysId=${item.drug.sysId}|" th:text="${item.drug.drugName}"></a>
+		</td>
+		<td >
+		<p th:text="${item.amount}"></p>
+		</td> 
+		<td th:text="${item.drug.price}"></td>
+		<td th:text="${item.drug.price*item.amount}"></td>
+		<td>
+		<form action="shoppingCart/removeFromCart" method="post">
+		<input type="hidden" th:value="${item.drug.sysId}" name="removalId">
+		<input type="submit" value="Remove">
+		</form>
+		
+		<form action="shoppingCart/reduce" method="post" >
+		<input type="hidden" th:value="${item.drug.sysId}" name="reduceId">
+		<input type="submit" value="-"  th:hidden="${item.amount==1}">
+		</form>
+		
+		<form action="shoppingCart/increase" method="post">
+		<input type="hidden" th:value="${item.drug.sysId}" name="increaseId">
+		<input type="submit" value="+" th:hidden="${item.drug.inventory==item.amount}">
+		</form>
+		</td>
+		
+  	</tr>
+  
+  </tbody>
+  </table>
 </body>
 </html>

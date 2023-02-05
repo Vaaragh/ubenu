@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>Companies</title>
+<title>Cards</title>
 <link rel="stylesheet" type="text/css" href="/Ubenu/css/TableStyles.css"/>	
 <link rel="stylesheet" type="text/css" href="/Ubenu/css/HorizontalMenuStyles.css"/>	
 
@@ -29,26 +29,34 @@
    
 
 </ul>
-<form method="post" action="update">
-	<input type="hidden" name="sysId" th:value="${company.getSysId()}">
-   <table>
-    <caption>
-     Pharmaceutical Company
-    </caption>
-    <tbody><tr>
-     <th>Name</th>
-     <td><input type="text" name="companyName" id="nameField" th:value="${company.getCompanyName()}"></td>
-    </tr>
-    <tr>
-     <th>HQ</th>
-     <td><input type="text" name="country" id="hqField" minlength="3" maxlength="3" th:value="${company.getCountry()}" ></td>
-    </tr>
-    <tr>
-     <th></th>
-     <td><input type="submit"></td>
-    </tr>
-   </tbody></table>
-  </form>
-
+  <table>
+   <caption>
+   Cards
+   </caption>
+   <thead>
+   <tr>
+    <th>User</th>
+   </tr>
+  </thead>
+  <tbody>
+  	<tr th:each="card : ${cards}">
+  		<td	th:text="${card.user.getUsername()}"></td>
+		
+		<td>
+		<form action="loyaltyCards/approve" method="post">
+		<input type="hidden" th:value="${card.user.getSysId()}" name="userId">
+		<input type="submit" value="Approve">
+		</form></td>	
+				<td>
+		<form action="loyaltyCards/decline" method="post">
+		<input type="hidden" th:value="${card.user.getSysId()}" name="userDId">
+		<input type="submit" value="Decline">
+		</form></td>
+			
+  
+  	</tr>
+  
+  </tbody>
+  </table>
 </body>
 </html>

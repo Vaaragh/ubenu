@@ -10,11 +10,12 @@
 </head>
 <body>
 <ul>
-   <li><a href="/Ubenu/companies">Companies</a></li>
-   <li><a href="/Ubenu/registration">Registration</a></li>
-   <li><a href="/Ubenu/companies/add">Add New Company</a></li>
-  
-  </ul>
+
+   <li><a href="/Ubenu/users/register" th:text="#{link.register.label}">Register</a></li>
+   
+
+</ul>
+
 <form method="POST" action="">
    <table>
     <caption>
@@ -22,11 +23,11 @@
     </caption>
     <tbody><tr>
      <th th:text="#{form.username.label}">Username</th>
-     <td><input type="text" name="username"></td>
+     <td><input type="text" name="username" required></td>
     </tr>
     <tr>
      <th  th:text="#{form.password.label}">Password</th>
-     <td><input type="text" name="password"></td>
+     <td><input type="text" name="password" required></td>
     </tr>
     <tr>
      <th></th>

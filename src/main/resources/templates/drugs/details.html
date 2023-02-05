@@ -3,18 +3,32 @@
 <head>
 <meta charset="UTF-8">
 
-<title>drugs</title>
+<title>Drugs</title>
 <link rel="stylesheet" type="text/css" href="/Ubenu/css/TableStyles.css"/>	
 <link rel="stylesheet" type="text/css" href="/Ubenu/css/HorizontalMenuStyles.css"/>	
 
 </head>
 <body>
 <ul>
-   <li><a href="/Ubenu/companies">Companies</a></li>
-   <li><a href="/Ubenu/users/register">Registration</a></li>
-   <li><a href="/Ubenu/companies/add">Add New Company</a></li>
-  
-  </ul>
+
+   <li th:hidden="${!session.role.equals('admin')}" ><a href="/Ubenu/companies" th:text="#{link.company.label}">Companies</a></li>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/companies/add" th:text="#{link.company.add}">Add Company</a></li>
+   <br>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/categories" th:text="#{link.category.label}">Categories</a></li>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/categories/add" th:text="#{link.category.add}">Add Category</a></li>
+   <br>
+   <li><a href="/Ubenu/drugs" th:text="#{link.drug.label}">Drugs</a></li>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/drugs/add" th:text="#{link.drug.add}">Add Drug</a></li>
+   <br>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/users" th:text="#{link.users.label}">Users</a></li>
+   <li th:hidden="${!session.role.equals('admin')}"><a href="/Ubenu/loyaltyCards" th:text="#{link.loyalty.label}">Cards</a></li>
+   <br>
+   <li th:hidden="${!session.role.equals('customer')}"><a href="/Ubenu/shoppingCart" th:text="#{link.cart.label}">Shopping Cart</a></li>
+   <br>
+   <li><a href="/Ubenu/users/login" th:text="#{link.logout.label}">Logout</a></li>
+   
+
+</ul>
 <form method="post" action="update">
 <input type="hidden" name="sysId" th:value="${drug.getSysId()}">
    <table>
@@ -104,10 +118,19 @@
 		<form action="addWish" method="post">
 		<input type="hidden" th:value="${drug.getSysId()}" name="drugId">
 		<input type="hidden" th:value="${session.user.sysId}" name="userId">
-		
 		<input type="submit" value="Add to Wishlist">
 		</form>
+		
+		<form action="addToCart" method="post">
+		
+		<input type="hidden" th:value="${drug.getSysId()}" name="drugCartId">
+		<input type="submit" value="Add to Cart">
+		</form>
+		
+		
 	</div>
+	
+	
 
 </body>
 </html>
