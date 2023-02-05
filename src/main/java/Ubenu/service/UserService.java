@@ -36,6 +36,7 @@ public class UserService {
 	
 	
 	public void update(User user) {
+
 		repo.update(user);
 	}
 	
@@ -43,11 +44,17 @@ public class UserService {
 		List<User> users = repo.findAll();
 		
 		for (User user : users) {
-			if (user.getUsername()==username && user.getPassword()==password && user.isActive()) {
+
+			if (user.getUsername().equals(username) && user.getPassword().equals(password) && user.isActive()) {
 				return user;
+			
 			}
 		}
 		return null;
+	}
+	
+	public void block(String sysId, boolean old) {
+		repo.block(sysId, old);
 	}
 	
 	

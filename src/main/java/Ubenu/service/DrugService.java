@@ -26,6 +26,11 @@ public class DrugService {
 		return repo.findAll();
 	}
 	
+	public List<Drug> findExisting(){
+		return repo.findExisting();
+	}
+	
+	
 	public Drug findOne(String sysId) {
 		return repo.findOne(sysId);
 	}
@@ -40,6 +45,10 @@ public class DrugService {
 		
 		repo.update(drug);
 		
+	}
+	
+	public void approve(String sysId) {
+		repo.approve(sysId);
 	}
 	
 	public void delete(String sysId) {

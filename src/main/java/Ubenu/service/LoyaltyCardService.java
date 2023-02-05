@@ -20,12 +20,13 @@ public class LoyaltyCardService {
 	}
 	
 	public List<LoyaltyCard> findApproved(){
-		return repo.findAllPending();
+		return repo.findAllApproved();
 	}
 	
 	public LoyaltyCard findUserCard(User user) {
 		List<LoyaltyCard> list = findApproved();
 		for (LoyaltyCard card : list) {
+			System.out.println(card.getNumberOfPoints());
 			if (card.getUser().getSysId().equals(user.getSysId())) {
 				return card;
 			}
@@ -33,16 +34,27 @@ public class LoyaltyCardService {
 		return null;
 	}
 	
-	public void save(User user) {
-		repo.save(user.getSysId());
+	public boolean checkForRequest(String userId) {
+		List<LoyaltyCard> list = findApproved();
+		list.addAll(findPending());
+		for (LoyaltyCard card : list) {
+			if (card.getUser().getSysId().equals(userId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void save(String userId) {
+		repo.save(userId);
 	}
 	
 	public void update(LoyaltyCard card) {
 		repo.update(card);
 	}
 	
-	public void approve(LoyaltyCard card) {
-		repo.approve(card);
+	public void approve(String userId) {
+		repo.approve(userId);
 	}
 	
 	
