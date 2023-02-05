@@ -1,6 +1,8 @@
 package Ubenu.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import Ubenu.model.Drug;
+import Ubenu.model.ShoppingItem;
 import Ubenu.model.enums.EDrugFormulation;
 import Ubenu.service.DrugCategoryService;
 import Ubenu.service.DrugService;
 import Ubenu.service.PharmaCompanyService;
+import Ubenu.service.ShoppingItemService;
 import Ubenu.service.WishlistService;
 
 @Controller
@@ -33,6 +37,8 @@ public class DrugController {
 	private PharmaCompanyService companyService;
 	@Autowired
 	private WishlistService wishServ;
+	@Autowired
+	private ShoppingItemService itemServ;
 
 
 	
@@ -105,6 +111,39 @@ public class DrugController {
 		drugService.approve(sysApproveId);
 		response.sendRedirect("/Ubenu/drugs");
 	}
+	
+	@PostMapping("/addToCart")
+	public void addToCart(@RequestParam String drugCartId, HttpServletResponse response, HttpSession session) throws IOException {
+		ArrayList<ShoppingItem> list = (ArrayList<ShoppingItem>) session.getAttribute("shoppingCart");
+		
+		if(list.isEmpty()) {
+			ShoppingItem newItem = new ShoppingItem();
+			newItem.setAmount(1);
+			newItem.setDrug(drugService.findOne(drugCartId));
+			list.add(newItem);
+			session.setAttribute("shoppingCart", list);
+		} else {
+			int index = -1;
+			for (int i=0; i<list.size();i++) {
+				if (list.get(i).getDrug().getSysId().equals(drugCartId)) {
+					index = i;
+				}
+			}
+			if (index == -1) {
+				ShoppingItem newItem = new ShoppingItem();
+				newItem.setAmount(1);
+				newItem.setDrug(drugService.findOne(drugCartId));
+				list.add(newItem);
+				session.setAttribute("shoppingCart", list);
+			} else {
+				ShoppingItem item = list.get(index);
+				item.setAmount(item.getAmount()+1);
+			}			
+		}
+		response.sendRedirect("/Ubenu/drugs");
+	}
+	
+
 	
 
 	

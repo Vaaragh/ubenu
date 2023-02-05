@@ -39,6 +39,7 @@ public class LoginController {
 	
 	@GetMapping("")
 	public String index(HttpServletResponse response, HttpSession session) {
+		session.invalidate();
 		return "/users/login";
 	}
 	

@@ -57,5 +57,9 @@ public class LoyaltyCardService {
 		repo.approve(userId);
 	}
 	
+	public void decline(String userId) {
+		repo.delete(userId);
+	}
+	
 	
 }

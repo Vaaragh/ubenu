@@ -3,6 +3,8 @@ package Ubenu.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import Ubenu.model.LoyaltyCard;
 import Ubenu.model.User;
 import Ubenu.model.enums.ERole;
 import Ubenu.service.LoyaltyCardService;
@@ -39,6 +42,7 @@ public class UserController {
 		String role = (String) session.getAttribute("role");
 
 		model.addAttribute("users", userServ.findAll());
+		model.addAttribute("pendingCards", cardServ.findPending());
 
 		return "users/index";
 	}
