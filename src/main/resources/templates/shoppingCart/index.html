@@ -67,8 +67,33 @@
 		</td>
 		
   	</tr>
+  	<tr>
+  	<td>Total:</td>
+  	<td th:text="${total}"></td>
+  	<td>
+  	<form action="shoppingCart/checkout" method="post">
+	<input type="submit" value="BUY" th:hidden="${session.shoppingCart.isEmpty()}">
+  	</form>
+  	</td>
+  	</tr>
   
   </tbody>
   </table>
+  
+  <div>
+  <table  th:unless="${session.loyalty==null}">
+  <th th:text="#{loyalty.points.label}">Loyalty Points</th>
+  <td th:text="${session.loyalty.numberOfPoints.toString()}"></td>
+  </table>
+  <div th:unless="${session.cardRequest}">
+  <form method="post" action="requestCard">
+<input type="hidden" name="userCardId" th:value="${session.user.sysId}">
+		<input type="submit" value="request">
+
+  </form>
+  
+  </div>
+  
+  
 </body>
 </html>

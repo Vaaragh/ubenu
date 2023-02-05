@@ -63,7 +63,13 @@
 		<form action="drugs/approve" method="post">
 		<input type="hidden" th:value="${drug.getSysId()}" name="sysApproveId">
 		<input type="submit" value="Approve">
-		</form></td>		
+		</form></td>
+		
+		<td th:if="${session.role.equals('customer')}">
+		<form action="drugs/addToCart" method="post">
+		<input type="hidden" th:value="${drug.getSysId()}" name="drugCartId">
+		<input type="submit" value="Add to Cart">
+		</form></td>			
   
   	</tr>
   
