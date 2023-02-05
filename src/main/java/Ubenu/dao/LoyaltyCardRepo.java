@@ -65,9 +65,14 @@ public class LoyaltyCardRepo {
 		db.update(sql, card.getNumberOfPoints(), card.getDiscountPerPoint(), card.getUser().getSysId());		
 	}
 	
-	public void approve(LoyaltyCard card) {
+	public void approve(String userId) {
 		String sql = "UPDATE LoyaltyCard SET approved=1 WHERE user_id=?;";
-		db.update(sql, card.getUser().getSysId());
+		db.update(sql, userId);
+	}
+	
+	public void delete(String userId) {
+		String sql = "DELETE FROM LoyaltyCard WHERE user_id=?;";
+		db.update(sql, userId);
 	}
 	
 	

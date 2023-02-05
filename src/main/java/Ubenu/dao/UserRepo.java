@@ -81,7 +81,7 @@ public class UserRepo {
 	
 	public void update(User u) {
 		String sql = "UPDATE UserTable SET"
-				+ " id=?, username=?, password=?, email=?, firstName=?, lastName=?, dateOfBirth=?,"
+				+ " username=?, password=?, email=?, firstName=?, lastName=?, dateOfBirth=?,"
 				+ "address=?, phoneNumber=? ,registrationDateTime=?, role=?, active=? WHERE id=? ";
 				db.update(sql, u.getUsername(), u.getPassword(), u.getEmail(), u.getFirstName(), u.getLastName(), u.getDateOfBirth(), u.getAddress(), u.getPhoneNumber(), u.getRegistartionDateTime(), u.getRole().toString(), u.isActive(), u.getSysId());
 	}
@@ -89,6 +89,11 @@ public class UserRepo {
 	public void delete(String sysId) {
 		 String sql = "DELETE FROM UserTable WHERE id=?";
 		 db.update(sql,sysId);
+	}
+	
+	public void block(String sysId, boolean old) {
+		String sql = "UPDATE UserTable SET active=? WHERE id=?;";
+		db.update(sql, !old, sysId);
 	}
 	
 

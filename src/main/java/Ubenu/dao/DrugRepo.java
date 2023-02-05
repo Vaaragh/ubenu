@@ -75,12 +75,12 @@ public class DrugRepo {
 		return db.query(sql, new RowMap());
 	}
 	
-	public List<Drug> findWishlist(String userId){
-		String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE id in (Select drug_id From wishlist where user_id=?);";
-		
-		return db.query(sql, new RowMap(), userId);
-		
-	}	
+	public List<Drug> findExisting(){
+		String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE approved=1 AND inventory>0";
+		return db.query(sql, new RowMap());
+	}
+	
+	
 	
 	 public Drug findOne(String sysId) {
 			String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE id=?";
@@ -105,6 +105,29 @@ public class DrugRepo {
 		 db.update(sql, IdGen.newID(), drug.getDrugName(), drug.getDrugCode(), drug.getDrugDescription(), drug.getContraindications(), drug.getDrugFormulation().toString(), drug.getImagePath(), drug.getInventory(), drug.getPrice(), drug.getPharmaCompany().getSysId(), drug.getDrugCategory().getSysId(), drug.isActive());
 
 	 }
-	
+	 
+	 public void approve(String sysId) {
+		 String sql = "UPDATE Drug SET approved=? WHERE id=?;";
+		 db.update(sql,true,sysId);
+	 }
+
+	 
+	 
+	 
+	 
+	 public List<Drug> findWishlist(String userId){
+		 String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE id in (Select drug_id From wishlist where user_id=?);";
+		 return db.query(sql, new RowMap(), userId);
+	 }	
+	 
+	 public void addToWishlist(String userId, String drugId) {
+		 String sql = "INSERT INTO WIshlist (user_id, drug_id) VALUES (?,?);";
+		 db.update(sql, userId, drugId);
+	 }
+	 
+	 public void removeFromWishlist(String userId, String drugId) {
+		 String sql = "DELETE FROM Wishlist WHERE user_id=? AND drug_id=?;";
+		 db.update(sql, userId, drugId);
+	 }
 	
 }
