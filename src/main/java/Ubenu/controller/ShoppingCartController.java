@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import Ubenu.model.CustomerOrder;
+import Ubenu.model.LoyaltyCard;
 import Ubenu.model.ShoppingItem;
 import Ubenu.model.User;
 import Ubenu.model.utilities.IdGen;
@@ -41,11 +42,18 @@ public class ShoppingCartController {
 	public String index(HttpSession session, Model model) {
 		
 		List<ShoppingItem> list = (List<ShoppingItem>) session.getAttribute("shoppingCart");
-		int total = 0;
+		float total = 0;
 		if (!list.isEmpty()) {
 			for (int i=0;i<list.size();i++) {
 				total += list.get(i).getAmount()*list.get(i).getDrug().getPrice();
 			}
+			
+		}
+		
+		LoyaltyCard card = (LoyaltyCard) session.getAttribute("loyalty");
+		if (!(card==null)) {
+			int pointsUsed = (int) session.getAttribute("pointsUsed");
+			total = total - (total * pointsUsed * card.getDiscountPerPoint());
 			
 		}
 		model.addAttribute("total", total);
@@ -99,7 +107,7 @@ public class ShoppingCartController {
 	}
 	
 	@PostMapping("/checkout")
-	public void checkout(HttpSession session, HttpServletResponse response) throws IOException {
+	public void checkout(@RequestParam String totalCheckout, HttpSession session, HttpServletResponse response) throws IOException {
 		String userId =((User) session.getAttribute("user")).getSysId();
 		List<ShoppingItem> listItems = (List<ShoppingItem>) session.getAttribute("shoppingCart");
 		String orderId = IdGen.newID();
@@ -107,7 +115,34 @@ public class ShoppingCartController {
 		
 		order.setItems(listItems);
 		orderServ.save(order, userId, orderId);
+		float total = Float.valueOf(totalCheckout);
+		int pointsUsed = (int) session.getAttribute("pointsUsed");
+		LoyaltyCard card = (LoyaltyCard) session.getAttribute("loyalty");
+		if (pointsUsed==0 && (card!=null)) {
+			card.setNumberOfPoints(card.getNumberOfPoints() + (int)(total/500));
+			cardServ.update(card);
+		}
+		if (pointsUsed>0 && (card!=null)) {
+			card.setNumberOfPoints(card.getNumberOfPoints() - pointsUsed);
+			cardServ.update(card);
+		}
+		
 		session.setAttribute("shoppingCart", new ArrayList<ShoppingItem>());
+		session.setAttribute("pointsUsed", 0);
+		
 		response.sendRedirect("/Ubenu/shoppingCart");		
 	}
+	
+	@PostMapping("/increasePoints")
+	public void increasePoints(HttpSession session, HttpServletResponse response) throws IOException {
+		session.setAttribute("pointsUsed", ((int) session.getAttribute("pointsUsed")) + 1);
+		response.sendRedirect("/Ubenu/shoppingCart");	
+	}
+	
+	@PostMapping("/reducePoints")
+	public void reducePoints(HttpSession session, HttpServletResponse response) throws IOException {
+		session.setAttribute("pointsUsed", ((int) session.getAttribute("pointsUsed")) - 1);
+		response.sendRedirect("/Ubenu/shoppingCart");	
+	}
+	
 }

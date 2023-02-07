@@ -26,7 +26,6 @@ public class LoyaltyCardService {
 	public LoyaltyCard findUserCard(User user) {
 		List<LoyaltyCard> list = findApproved();
 		for (LoyaltyCard card : list) {
-			System.out.println(card.getNumberOfPoints());
 			if (card.getUser().getSysId().equals(user.getSysId())) {
 				return card;
 			}
@@ -38,6 +37,16 @@ public class LoyaltyCardService {
 		List<LoyaltyCard> list = findApproved();
 		list.addAll(findPending());
 		for (LoyaltyCard card : list) {
+			if (card.getUser().getSysId().equals(userId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkForPending(String userId) {
+		List<LoyaltyCard> list = findPending();
+		for(LoyaltyCard card : list) {
 			if (card.getUser().getSysId().equals(userId)) {
 				return true;
 			}

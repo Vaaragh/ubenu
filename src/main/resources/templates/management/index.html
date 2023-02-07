@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>Company</title>
+<title>History</title>
 <link rel="stylesheet" type="text/css" href="/Ubenu/css/TableStyles.css"/>	
 <link rel="stylesheet" type="text/css" href="/Ubenu/css/HorizontalMenuStyles.css"/>	
 
@@ -30,26 +30,62 @@
    
 
 </ul>
-<form method="post" action="update">
-	<input type="hidden" name="sysId" th:value="${company.getSysId()}">
-   <table>
-    <caption>
-     Pharmaceutical Company
-    </caption>
-    <tbody><tr>
-     <th>Name</th>
-     <td><input type="text" name="companyName" id="nameField" th:value="${company.getCompanyName()}"></td>
-    </tr>
-    <tr>
-     <th>HQ</th>
-     <td><input type="text" name="country" id="hqField" minlength="3" maxlength="3" th:value="${company.getCountry()}" ></td>
-    </tr>
-    <tr>
-     <th></th>
-     <td><input type="submit"></td>
-    </tr>
-   </tbody></table>
-  </form>
 
+<form action="/Ubenu/management/index/search" method="get">
+	<table>
+		
+		<tr>
+		<th>Start Date:</th>
+		<td>
+		<input type="date" name="searchDateStart" th:max="${today}">
+		</tr>
+		
+		<tr>
+		<th>End Date:</th>
+		<td>
+		<input type="date" name="searchDateEnd" th:value="${today}" th:max="${today}">
+		</tr>
+			
+		<tr>
+		<th>
+		<input type="submit" value="Seach">
+		</th>
+		</tr>	
+	</table>
+</form>
+
+
+  <table>
+   <caption>
+   Orders
+   </caption>
+   <thead>
+   <tr>
+    <th>Name</th>
+    <th>Company</th>
+    <th>Qty</th>
+    <th>Price</th>
+    <th>Subtotal</th>
+   </tr>
+  </thead>
+  <tbody>
+  	<tr th:each="item : ${history}">
+		<td>
+		<a type="button" th:href="|/Ubenu/drugs/details?sysId=${item.drug.getSysId()}|" th:text="${item.drug.drugName}"></a>
+		</td>
+		<td th:text="${item.drug.pharmaCompany.companyName}"></td>
+		<td th:text="${item.amount}"></td> 
+		<td th:text="${item.price}"></td>
+		<td th:text="${item.price * item.amount}"></td>
+		
+  
+  	</tr>
+  	<tr>
+  	<th>Total: </th>
+  	<td th:text="${totalPrice}"></td>
+  	</tr>
+  
+  </tbody>
+  </table>
 </body>
 </html>

@@ -9,11 +9,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import Ubenu.model.Comment;
 import Ubenu.model.Drug;
 import Ubenu.model.DrugCategory;
 import Ubenu.model.PharmaCompany;
 import Ubenu.model.enums.EDrugFormulation;
 import Ubenu.model.utilities.IdGen;
+import Ubenu.service.CommentService;
 import Ubenu.service.DrugCategoryService;
 import Ubenu.service.PharmaCompanyService;
 
@@ -28,6 +30,9 @@ public class DrugRepo {
 	
 	@Autowired
 	private PharmaCompanyService companyServ;
+	
+	@Autowired
+	private CommentService commServ;
 	
 	private class RowMap implements RowMapper<Drug>{
 
@@ -50,6 +55,8 @@ public class DrugRepo {
 			
 			PharmaCompany company = companyServ.findOne(companyId);
 			DrugCategory category = categoryServ.findOne(categoryId);
+			
+
 			
 			Drug drug = new Drug();
 			drug.setSysId(id);
@@ -78,6 +85,12 @@ public class DrugRepo {
 	public List<Drug> findExisting(){
 		String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE approved=1 AND inventory>0";
 		return db.query(sql, new RowMap());
+	}
+	
+	public List<Drug> findBoughtDrugs(String userId){
+		String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE id in (SELECT drug_id FROM ShoppingItem WHERE id IN (SELECT item_id FROM CustomerOrderItems WHERE order_id IN (SELECT id FROM CustomerOrder WHERE user_id=?)));";
+		return db.query(sql, new RowMap(), userId);
+
 	}
 	
 	
@@ -109,6 +122,16 @@ public class DrugRepo {
 	 public void approve(String sysId) {
 		 String sql = "UPDATE Drug SET approved=? WHERE id=?;";
 		 db.update(sql,true,sysId);
+	 }
+	 
+	 public List<Drug> search(String name, String catId, float min, float max){
+			String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE title LIKE ? and category_id LIKE ? and price<? and price>=? ";
+			return db.query(sql, new RowMap(), name, catId, max, min);
+	 }
+	 
+	 public List<Drug> searchCustomer(String name, String catId, float min, float max){
+			String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE title LIKE ? and category_id LIKE ? and price<? and price>=? and approved=? ";
+			return db.query(sql, new RowMap(), name, catId, max, min, 1);
 	 }
 
 	 

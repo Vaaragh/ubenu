@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import Ubenu.model.ShoppingItem;
 import Ubenu.model.User;
 import Ubenu.service.CustomerOrderService;
+import Ubenu.service.DrugService;
 import Ubenu.service.LoyaltyCardService;
 import Ubenu.service.UserService;
 import Ubenu.service.WishlistService;
@@ -36,6 +37,9 @@ public class LoginController {
 	@Autowired
 	private LoyaltyCardService cardServ;
 	
+	@Autowired
+	private DrugService drugServ;
+	
 	
 	@GetMapping("")
 	public String index(HttpServletResponse response, HttpSession session) {
@@ -51,6 +55,8 @@ public class LoginController {
 		}else {
 			switch (user.getRole().toString()) {
 			case "CUSTOMER":
+				session.setAttribute("boughtDrugs", drugServ.findBoughtDrugs(user.getSysId()));
+				session.setAttribute("pointsUsed", 0);
 				session.setAttribute("user", user);
 				session.setAttribute("loyalty", cardServ.findUserCard(user));
 				session.setAttribute("wishlist", wishServ.findOne(user.getSysId()));

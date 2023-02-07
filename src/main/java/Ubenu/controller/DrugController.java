@@ -16,13 +16,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import Ubenu.model.Comment;
 import Ubenu.model.Drug;
 import Ubenu.model.ShoppingItem;
+import Ubenu.model.User;
 import Ubenu.model.enums.EDrugFormulation;
+import Ubenu.service.CommentService;
 import Ubenu.service.DrugCategoryService;
 import Ubenu.service.DrugService;
 import Ubenu.service.PharmaCompanyService;
-import Ubenu.service.ShoppingItemService;
 import Ubenu.service.WishlistService;
 
 @Controller
@@ -38,13 +40,13 @@ public class DrugController {
 	@Autowired
 	private WishlistService wishServ;
 	@Autowired
-	private ShoppingItemService itemServ;
-
+	private CommentService commServ;
 
 	
 	@GetMapping("")
 	public String index(Model model, HttpSession session) {
 		String role = (String) session.getAttribute("role");
+		model.addAttribute("categories", categoryService.findAll());
 		switch(role) {
 		case "admin":
 			model.addAttribute("drugs", drugService.findAll());
@@ -60,13 +62,49 @@ public class DrugController {
 		return "drugs/index";
 	}
 	
+	@GetMapping("index/search")
+	public String indexSearch(Model model, HttpSession session, @RequestParam String searchName, @RequestParam String searchCategory, @RequestParam String searchPriceMin, @RequestParam String searchPriceMax) {
+		boolean customer = ((String)session.getAttribute("role")).equals("customer");
+		List<Drug> list = drugService.searchByParams(searchName, searchCategory, searchPriceMin, searchPriceMax, customer);
+		System.out.println(list.isEmpty());
+		
+		model.addAttribute("drugs", list);
+		
+		model.addAttribute("categories", categoryService.findAll());
+		return "drugs/index";
+	}
+	
+	
+	
+	
+	
+	
 	@GetMapping("/details")
-	public String details(@RequestParam String sysId, Model model) {
+	public String details(@RequestParam String sysId, Model model, HttpSession session) {
 		Drug drug = drugService.findOne(sysId);
+		List<Comment> commList = commServ.findForDrug(sysId);
+		
+		boolean allowed = false;
+		List<Drug> bought = (List<Drug>) session.getAttribute("boughtDrugs");
+		if (bought!=null) {
+			for (int i=0; i<bought.size();i++) {
+				if (bought.get(i).getSysId().equals(sysId)) {
+					allowed = true;
+					break;
+				}
+			}
+		}
+		model.addAttribute("allowed", allowed);
 		model.addAttribute("drugForms", EDrugFormulation.values());
 		model.addAttribute("companies", companyService.findAll());
 		model.addAttribute("categories", categoryService.findAll());
 		model.addAttribute("drug", drug);
+		if (commList.isEmpty()) {
+			model.addAttribute("comments", new ArrayList<Comment>());
+		} else {
+			model.addAttribute("comments", commList);			
+		}
+		
 		return "drugs/details";
 	}
 	
@@ -140,6 +178,18 @@ public class DrugController {
 				item.setAmount(item.getAmount()+1);
 			}			
 		}
+		response.sendRedirect("/Ubenu/drugs");
+	}
+	
+	@PostMapping("/addComment")
+	public void comment(@RequestParam String drugCommentId, @RequestParam String anonComment, @RequestParam String ratingComment, @RequestParam String textComment, HttpSession session, HttpServletResponse response) throws IOException {
+		String userId =((User) session.getAttribute("user")).getSysId();
+		Comment comment = new Comment();
+		comment.setAnon(Boolean.parseBoolean(anonComment));
+		comment.setRating(Integer.parseInt(ratingComment));
+		comment.setTextContent(textComment);
+		commServ.save(comment, userId, drugCommentId);
+		
 		response.sendRedirect("/Ubenu/drugs");
 	}
 	

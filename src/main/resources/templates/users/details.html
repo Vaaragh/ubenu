@@ -25,20 +25,38 @@
    <br>
    <li th:hidden="${!session.role.equals('customer')}"><a href="/Ubenu/shoppingCart" th:text="#{link.cart.label}">Shopping Cart</a></li>
    <br>
+   <li><a th:href="@{/users/details?sysId={id}(id=${session.user.sysId})}" th:text="#{link.profile.label}">Profile</a></li>
    <li><a href="/Ubenu/users/login" th:text="#{link.logout.label}">Logout</a></li>
    
 
 </ul>
   
-  <div>
+  <div th:if="${session.role.equals('customer')}">
   <table  th:unless="${session.loyalty==null}">
   <th th:text="#{loyalty.points.label}">Loyalty Points</th>
   <td th:text="${session.loyalty.numberOfPoints.toString()}"></td>
   </table>
   <div th:unless="${session.cardRequest}">
   <form method="post" action="requestCard">
-<input type="hidden" name="userCardId" th:value="${user.sysId}">
+	<input type="hidden" name="userCardId" th:value="${user.sysId}">
 		<input type="submit" value="request">
+
+  </form>
+  
+  </div>
+  </div>
+  
+  
+  
+  <div th:if="${session.role.equals('admin') && pendingCard}">
+  <form action="approveCard" method="post">
+  	<input type="hidden" name="userApproveId" th:value="${user.sysId}">
+		<input type="submit" value="Approve the Users Card">
+
+  </form>
+    <form action="deleteCard" method="post">
+  	<input type="hidden" name="userApproveId" th:value="${user.sysId}">
+		<input type="submit" value="Reject the Users Card">
 
   </form>
   
@@ -91,6 +109,7 @@
   </form>
 
   <table>
+  <div th:unless="${session.wishlist==null}" >
   <div th:unless="${session.wishlist.isEmpty()}" >
   <tr th:each="drug : ${session.wishlist}">  	
   	<td>
@@ -107,7 +126,13 @@
 	</td>	
 	  	
   </tr>
+  </div>
   </table>
+  </div>
+  
+  <div>
+  
+  
   </div>
 
   

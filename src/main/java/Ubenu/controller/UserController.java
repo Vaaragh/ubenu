@@ -51,7 +51,7 @@ public class UserController {
 	public String details(@RequestParam String sysId, Model model) {
 		
 		
-		
+		model.addAttribute("pendingCard", cardServ.checkForPending(sysId));
 		model.addAttribute("user", userServ.findOne(sysId));
 		model.addAttribute("ERoles", ERole.values());
 		return "users/details";
@@ -117,6 +117,20 @@ public class UserController {
 		session.setAttribute("cardRequest", true);
 		response.sendRedirect("/Ubenu/users/details?sysId=" + userCardId);
 
+		
+	}
+	
+	@PostMapping("/approveCard")
+	public void approveCard(@RequestParam String userApproveId, HttpServletResponse response, HttpSession session) throws IOException {
+		cardServ.approve(userApproveId);
+		response.sendRedirect("/Ubenu/users");
+		
+	}
+	
+	@PostMapping("/deleteCard")
+	public void deleteCard(@RequestParam String userApproveId, HttpServletResponse response, HttpSession session) throws IOException {
+		cardServ.decline(userApproveId);
+		response.sendRedirect("/Ubenu/users");
 		
 	}
 	

@@ -25,10 +25,47 @@
    <br>
    <li th:hidden="${!session.role.equals('customer')}"><a href="/Ubenu/shoppingCart" th:text="#{link.cart.label}">Shopping Cart</a></li>
    <br>
+   <li><a th:href="@{/users/details?sysId={id}(id=${session.user.sysId})}" th:text="#{link.profile.label}">Profile</a></li>
    <li><a href="/Ubenu/users/login" th:text="#{link.logout.label}">Logout</a></li>
-   
+   <li th:hidden="${!session.role.equals('admin')}" ><a href="/Ubenu/management" th:text="#{link.management.label}">Management</a></li>
 
 </ul>
+<form action="/Ubenu/drugs/index/search" method="get">
+	<table>
+		<tr>
+		<th>Name:</th>
+		<td>
+		<input type="text" name="searchName">
+		</td>
+		</tr>		
+		
+		<tr>
+		<th>Category:</th>
+		<td>
+     	<select name="searchCategory">
+     		<option selected></option>
+     		<option th:each="category: ${categories}"
+     		th:text="${category.getCategoryName()}"
+     		th:value=${category.getSysId()}>
+     	</select>
+        </td>
+		</tr>	
+		
+		<tr>
+		<th>Price:</th>
+		<td>
+		<input type="text" name="searchPriceMin">
+		<input type="text" name="searchPriceMax">
+		</tr>
+			
+		<tr><th>
+		<input type="submit" value="Seach">
+		</th></tr>	
+	</table>
+</form>
+
+
+
   <table>
    <caption>
    Drugs
@@ -47,17 +84,11 @@
   		<img alt="drug" th:src="${drug.getImagePath}">
   		</td>
 		<td>
-		<a type="button" th:href="|drugs/details?sysId=${drug.getSysId()}|" th:text="${drug.getDrugName()}"></a>
+		<a type="button" th:href="|/Ubenu/drugs/details?sysId=${drug.getSysId()}|" th:text="${drug.getDrugName()}"></a>
 		</td>
 		<td th:text="${drug.getRating()}"></td> 
 		<td th:text="${drug.getPrice()}"></td>
-		
-		<td th:hidden="!${session.role.equals('admin')}">
-		<form action="drugs/delete" method="post">
-		<input type="hidden" th:value="${drug.getSysId()}" name="sysId">
-		<input type="submit" value="Delete">
-		</form></td>
-		
+				
 			
 		<td th:hidden="${!session.role.equals('merchant') || drug.isActive()}">
 		<form action="drugs/approve" method="post">

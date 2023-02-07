@@ -25,11 +25,12 @@
    <br>
    <li th:hidden="${!session.role.equals('customer')}"><a href="/Ubenu/shoppingCart" th:text="#{link.cart.label}">Shopping Cart</a></li>
    <br>
+   <li><a th:href="@{/users/details?sysId={id}(id=${session.user.sysId})}" th:text="#{link.profile.label}">Profile</a></li>
    <li><a href="/Ubenu/users/login" th:text="#{link.logout.label}">Logout</a></li>
    
 
 </ul>
-  <table>
+  <table sort>
    <caption>
    Companies
    </caption>

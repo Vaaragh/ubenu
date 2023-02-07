@@ -1,5 +1,6 @@
 package Ubenu.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +23,71 @@ public class DrugService {
 	@Autowired
 	private DrugCategoryService categServ;
 	
+	@Autowired
+	private CommentService commServ;
+	
+	
 	public List<Drug> findAll(){
-		return repo.findAll();
+		List<Drug> list = repo.findAll();
+		for (int i=0;i<list.size();i++) {
+			list.get(i).setRating(commServ.findRatingForDrug(list.get(i).getSysId()));
+		}
+		return list;
 	}
 	
 	public List<Drug> findExisting(){
-		return repo.findExisting();
+		List<Drug> list = repo.findExisting();
+		for (int i=0;i<list.size();i++) {
+			list.get(i).setRating(commServ.findRatingForDrug(list.get(i).getSysId()));
+		}
+		return list;
+	}
+	
+	public List<Drug> findBoughtDrugs(String userId){
+		return repo.findBoughtDrugs(userId);
 	}
 	
 	
 	public Drug findOne(String sysId) {
-		return repo.findOne(sysId);
+		Drug drug = repo.findOne(sysId);
+		drug.setRating(commServ.findRatingForDrug(sysId));
+		return drug;
+	}
+	
+	public List<Drug> searchByParams(String name, String categoryId, String priceMin, String priceMax, boolean customer){
+		float priceMinV=0;
+		float priceMaxV=1000000;
+		
+		if(name=="") {
+			name="%";
+		} else {
+			name= "%"+name+"%";
+		}
+		if(categoryId=="") {
+			categoryId="%";
+		} 
+		if(priceMin!="") {
+			priceMinV=Float.valueOf(priceMin);
+		}
+		if(priceMax!="") {
+			priceMaxV=Float.valueOf(priceMax);
+		}
+		
+		List<Drug> list;
+		if (customer) {
+			list = repo.searchCustomer(name,categoryId, priceMinV, priceMaxV);
+		} else {
+			list = repo.search(name,categoryId, priceMinV, priceMaxV);
+		}
+		
+		
+		if (list==null) {
+			list = new ArrayList<Drug>();
+		}
+		for (int i=0;i<list.size();i++) {
+			list.get(i).setRating(commServ.findRatingForDrug(list.get(i).getSysId()));
+		}
+		return list;
 	}
 	
 	

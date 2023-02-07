@@ -56,12 +56,14 @@ CREATE TABLE Drug (
 --  20, 320,'223e4267-e89b-12d3-a456-426614174000' , '123e4567-e89b-12s3-a456-426614174108', true);
 
 
+
   INSERT INTO Drug (id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved)
  values ('d1', 'title 2', 'asdfghytrewqui', 'opis', 'contra', 'SYRUP', 'https://www.drugs.com/images/pills/fio/ACC03010/trazodone-hydrochloride.JPG',
  20, 320,'pc1' , 'dc1', true);
    INSERT INTO Drug (id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved)
  values ('d2', 'title 2', 'asdfghytrewqui', 'opis', 'contra', 'SYRUP', 'https://www.drugs.com/images/pills/fio/ACC03010/trazodone-hydrochloride.JPG',
  20, 320,'pc2' , 'dc1', true);
+
 
 
 CREATE TABLE ShoppingItem(
@@ -112,7 +114,22 @@ CREATE TABLE CustomerOrder (
     FOREIGN KEY (user_id) REFERENCES UserTable(id)
 	);
     
+SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE id in (SELECT drug_id FROM ShoppingItem WHERE id IN (SELECT item_id FROM CustomerOrderItems WHERE order_id IN (SELECT id FROM CustomerOrder WHERE user_id='u2')));
+
+select * from shoppingitem;
+select * from customerorderitems;
+
+
+Select d.id, SUM(si.amount) amount, d.price from customerOrder co
+JOIN customerorderitems coi on co.id=coi.order_id
+JOIN ShoppingItem si on coi.item_id=si.id
+JOIN Drug d on d.id=si.drug_id
+WHERE date_of BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()
+GROUP BY d.id;
     
+    drop table customerorderitems;
+    drop table customerorder;
+    drop table shoppingItem;
     
 CREATE TABLE CustomerOrderItems (
     order_id varchar(36) not null,
@@ -124,15 +141,31 @@ CREATE TABLE CustomerOrderItems (
     
 
 CREATE TABLE Comment (
+	id varchar(36) unique not null,
 	txt varchar(500) not null,
     rating int not null,
     date_of date not null,
 	user_id varchar(36) not null,
-    drug_id varchar(36) not null,
     anon bool,
-    FOREIGN KEY (user_id) REFERENCES UserTable(id),
+    FOREIGN KEY (user_id) REFERENCES UserTable(id)
+    );
+
+CREATE TABLE RatingTable (
+	comm_id varchar(36) not null,
+	drug_id varchar(36) not null,
+    FOREIGN KEY (comm_id) REFERENCES Comment(id),
     FOREIGN KEY (drug_id) REFERENCES Drug(id)
     );
+  
+INSERT INTO Comment (id, txt, rating, date_of, user_id, anon) VALUES ('c1', 'text', 3, '2023-01-01', 'u2', 1);
+INSERT INTO ratingtable (comm_id, drug_id) VALUES ('c1', 'd1');
+
+INSERT INTO Comment (id, txt, rating, date_of, user_id, anon) VALUES ('c2', 'text 2', 2, '2023-01-01', 'u2', 0);
+INSERT INTO ratingtable (comm_id, drug_id) VALUES ('c2', 'd1');
+    
+  
+drop table ratingtable;
+update usertable set username='admin', password = 'admin' where id='u3';
 
     
 CREATE TABLE Wishlist (
@@ -141,6 +174,13 @@ CREATE TABLE Wishlist (
     FOREIGN KEY (user_id) REFERENCES usertable(id),
     FOREIGN KEY (drug_id) REFERENCES drug(id)
     );
+    
+CREATE TABLE zaBrisanje
+(
+id varchar(10)
+);
+
+Insert into zabrisanje (id) values ('yy');
     
 
     
@@ -152,7 +192,9 @@ CREATE TABLE LoyaltyCard (
     FOREIGN KEY (user_id) REFERENCES UserTable(id)
     );
     
-DELETE FROM usertable;
+Select * From drug;
+
+select * from usertable;
 
 DROP TABLE CustomerOrder;
 Drop Table customerorderitems;

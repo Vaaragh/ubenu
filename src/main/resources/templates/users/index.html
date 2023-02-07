@@ -25,6 +25,7 @@
    <br>
    <li th:hidden="${!session.role.equals('customer')}"><a href="/Ubenu/shoppingCart" th:text="#{link.cart.label}">Shopping Cart</a></li>
    <br>
+   <li><a th:href="@{/users/details?sysId={id}(id=${session.user.sysId})}" th:text="#{link.profile.label}">Profile</a></li>
    <li><a href="/Ubenu/users/login" th:text="#{link.logout.label}">Logout</a></li>
    
 
@@ -43,7 +44,11 @@
   </thead>
   <tbody>
   	<tr th:each="user : ${users}">
-  		<td	th:text="${user.getUsername()}"></td>
+  		<td>
+  		<a type="button" th:href="|/Ubenu/users/details?sysId=${user.getSysId()}|" th:text="${user.username}"></a>
+  		
+  		
+  		</td>
 		<td th:text="${user.getEmail()}"></td> 
   		<td th:text="${user.getAddress()}"></td> 
 		<td th:text="${user.getPhoneNumber()}"></td>

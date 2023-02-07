@@ -4,28 +4,25 @@ import java.time.LocalDate;
 
 public class Comment {
 	
-
+	private String sysId;
 	private String textContent;
 	private int rating;
 	private LocalDate dateOf;
 	private User user;
-	private Drug drug;
 	private boolean anon;
 	
 	
 	public Comment() {
 	}
-
-
-	public Comment(String textContent, int rating, LocalDate dateOf, User user, Drug drug, boolean anon) {
-		this.textContent = textContent;
-		this.rating = rating;
-		this.dateOf = dateOf;
-		this.user = user;
-		this.drug = drug;
-		this.anon = anon;
+	
+	
+	public String getSysId() {
+		return sysId;
 	}
 
+	public void setSysId(String sysId) {
+		this.sysId = sysId;
+	}
 
 	public String getTextContent() {
 		return textContent;
@@ -66,15 +63,6 @@ public class Comment {
 		this.user = user;
 	}
 
-
-	public Drug getDrug() {
-		return drug;
-	}
-
-
-	public void setDrug(Drug drug) {
-		this.drug = drug;
-	}
 
 
 	public boolean isAnon() {

@@ -25,6 +25,7 @@
    <br>
    <li th:hidden="${!session.role.equals('customer')}"><a href="/Ubenu/shoppingCart" th:text="#{link.cart.label}">Shopping Cart</a></li>
    <br>
+   <li><a th:href="@{/users/details?sysId={id}(id=${session.user.sysId})}" th:text="#{link.profile.label}">Profile</a></li>
    <li><a href="/Ubenu/users/login" th:text="#{link.logout.label}">Logout</a></li>
    
 
@@ -126,9 +127,89 @@
 		<input type="hidden" th:value="${drug.getSysId()}" name="drugCartId">
 		<input type="submit" value="Add to Cart">
 		</form>
-		
-		
 	</div>
+	
+	<div th:if="${!comments.isEmpty()}">
+	<table>
+		<tr th:each="comm : ${comments}">
+			<table>
+			
+				<tr>
+				<th>User</th>
+				<td th:text="${comm.anon ? 'Anonymous' : comm.user.username}"></td>
+				</tr>
+				
+				<tr>
+				<th>Rating</th>
+				<td th:text="${comm.rating}"></td>
+				</tr>
+				
+				<tr>
+				<th>Comment</th>
+				<td th:text="${comm.textContent}"></td>
+				</tr>
+			
+			</table>
+		</tr>
+	</table>
+	</div>
+	
+	<div th:if="${session.role.equals('customer')}">
+	<table th:if="${allowed}">
+		<tr>
+			<table>
+				<form action="addComment" method="post">
+				<input type="hidden" th:value="${drug.sysId}" name="drugCommentId">
+				<tr>
+				<th>Anonymus:</th>
+				<td>
+
+				<input type="radio" id="rate1" name="anonComment" value="true">
+				<label for="rate1">YES</label>
+				<input type="radio" id="rate2" name="anonComment" value="false">
+				<label for="rate2">NO</label>
+				
+				</td>
+				</tr>
+				
+				<tr>
+				<th>Rating</th>
+				<td>
+				
+				<input type="radio" id="rate1" name="ratingComment" value="1">
+				<label for="rate1">1</label>
+				<input type="radio" id="rate2" name="ratingComment" value="2">
+				<label for="rate2">2</label>
+				<input type="radio" id="rate3" name="ratingComment" value="3">
+				<label for="rate3">3</label>
+				<input type="radio" id="rate4" name="ratingComment" value="4">
+				<label for="rate4">4</label>
+				<input type="radio" id="rate5" name="ratingComment" value="5">
+				<label for="rate5">5</label>
+				
+				</td>
+				</tr>
+				
+				<tr>
+				<th>Comment</th>
+				<td>
+				<textarea name="textComment" rows="4" cols="40" style="resize:none" required></textarea>
+				</td>
+				</tr>
+				
+				<tr>
+				<td>
+				<input type="submit" th:value="#{submit.button.name}">
+				</td>
+				</tr>
+			
+				</form>
+			</table>
+		</tr>
+	</table>
+	</div>
+	
+	
 	
 	
 
