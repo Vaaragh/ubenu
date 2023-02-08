@@ -63,10 +63,15 @@ public class DrugController {
 	}
 	
 	@GetMapping("index/search")
-	public String indexSearch(Model model, HttpSession session, @RequestParam String searchName, @RequestParam String searchCategory, @RequestParam String searchPriceMin, @RequestParam String searchPriceMax) {
+	public String indexSearch(Model model, HttpSession session, 
+								@RequestParam String searchName, 
+								@RequestParam String searchCategory,
+								@RequestParam String searchPriceMin, 
+								@RequestParam String searchPriceMax,
+								@RequestParam String sortBy,
+								@RequestParam String ascDesc) {
 		boolean customer = ((String)session.getAttribute("role")).equals("customer");
-		List<Drug> list = drugService.searchByParams(searchName, searchCategory, searchPriceMin, searchPriceMax, customer);
-		System.out.println(list.isEmpty());
+		List<Drug> list = drugService.searchByParams(searchName, searchCategory, searchPriceMin, searchPriceMax, customer, sortBy, ascDesc);
 		
 		model.addAttribute("drugs", list);
 		

@@ -54,7 +54,7 @@ public class DrugService {
 		return drug;
 	}
 	
-	public List<Drug> searchByParams(String name, String categoryId, String priceMin, String priceMax, boolean customer){
+	public List<Drug> searchByParams(String name, String categoryId, String priceMin, String priceMax, boolean customer, String sortBy, String ascDesc){
 		float priceMinV=0;
 		float priceMaxV=1000000;
 		
@@ -75,9 +75,9 @@ public class DrugService {
 		
 		List<Drug> list;
 		if (customer) {
-			list = repo.searchCustomer(name,categoryId, priceMinV, priceMaxV);
+			list = repo.searchCustomer(name,categoryId, priceMinV, priceMaxV, sortBy, ascDesc);
 		} else {
-			list = repo.search(name,categoryId, priceMinV, priceMaxV);
+			list = repo.search(name,categoryId, priceMinV, priceMaxV, sortBy, ascDesc);
 		}
 		
 		

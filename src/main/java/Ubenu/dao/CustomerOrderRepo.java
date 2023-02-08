@@ -35,10 +35,16 @@ public class CustomerOrderRepo {
 			LocalDate date = rs.getDate(i++).toLocalDate();
 			
 			List<ShoppingItem> items = siServ.findForOrder(id);
+			float total = 0;
+			for (int j=0;j<items.size();j++) {
+				total += items.get(j).getAmount()*items.get(j).getDrug().getPrice();
+				
+			}
 			
 			
 			
 			CustomerOrder order = new CustomerOrder();
+			order.setTotal(total);
 			order.setSysId(id);
 			order.setDate(date);
 			order.setItems(items);
@@ -53,7 +59,7 @@ public class CustomerOrderRepo {
 	}
 	
 	public List<CustomerOrder> findForCustomer(String userId){
-		String sql = "SELECT id, date_of FROM CustomerOrder WHERE user_id=?;";
+		String sql = "SELECT id, date_of FROM CustomerOrder WHERE user_id=? ORDER BY date_of desc;";
 		return db.query(sql, new RowMap(), userId);
 	}
 	

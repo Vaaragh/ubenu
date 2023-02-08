@@ -48,7 +48,6 @@
      		th:text="${category.getCategoryName()}"
      		th:value=${category.getSysId()}>
      	</select>
-        </td>
 		</tr>	
 		
 		<tr>
@@ -57,10 +56,30 @@
 		<input type="text" name="searchPriceMin">
 		<input type="text" name="searchPriceMax">
 		</tr>
+		
+		<tr>
+		<th>Sort By</th>
+		<td>
+		<select name="sortBy">
+			<option value="title">Name</option>
+			<option value="category_id">Category</option>	
+			<option value="price">Price</option>
+			<option value="" selected>No Sort</option>		
+		</select>
+		</td>
+		<td>
+		<select name="ascDesc">
+			<option value="asc" selected>asc</option>
+			<option value="desc">desc</option>			
+		</select>
+		</td>
+		</tr>	
 			
 		<tr><th>
 		<input type="submit" value="Seach">
-		</th></tr>	
+		</th></tr>
+		
+		
 	</table>
 </form>
 

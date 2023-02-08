@@ -8,12 +8,31 @@ public class CustomerOrder {
 	private String sysId;
 	private List<ShoppingItem> items;
 	private LocalDate date;
+	private float total;
 	
 	public CustomerOrder() {
 		
 	}
 	
 	
+	
+	
+
+	public float getTotal() {
+		return total;
+	}
+
+
+
+
+
+	public void setTotal(float total) {
+		this.total = total;
+	}
+
+
+
+
 
 	public LocalDate getDate() {
 		return date;

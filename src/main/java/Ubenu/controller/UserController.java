@@ -3,8 +3,6 @@ package Ubenu.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,9 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import Ubenu.model.LoyaltyCard;
 import Ubenu.model.User;
 import Ubenu.model.enums.ERole;
+import Ubenu.service.CustomerOrderService;
 import Ubenu.service.LoyaltyCardService;
 import Ubenu.service.UserService;
 import Ubenu.service.WishlistService;
@@ -35,6 +33,8 @@ public class UserController {
 	private WishlistService wishServ;
 	@Autowired
 	private LoyaltyCardService cardServ;
+	@Autowired
+	private CustomerOrderService orderServ;
 	
 	
 	@GetMapping("")
@@ -50,7 +50,7 @@ public class UserController {
 	@GetMapping("/details")
 	public String details(@RequestParam String sysId, Model model) {
 		
-		
+		model.addAttribute("customerHistory", orderServ.findForCustomer(sysId));
 		model.addAttribute("pendingCard", cardServ.checkForPending(sysId));
 		model.addAttribute("user", userServ.findOne(sysId));
 		model.addAttribute("ERoles", ERole.values());

@@ -124,14 +124,22 @@ public class DrugRepo {
 		 db.update(sql,true,sysId);
 	 }
 	 
-	 public List<Drug> search(String name, String catId, float min, float max){
-			String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE title LIKE ? and category_id LIKE ? and price<? and price>=? ";
+	 public List<Drug> search(String name, String catId, float min, float max, String sortBy, String ascDesc){
+			String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE title LIKE ? and category_id LIKE ? and price<? and price>=? " + wrapSort(sortBy, ascDesc);
 			return db.query(sql, new RowMap(), name, catId, max, min);
 	 }
 	 
-	 public List<Drug> searchCustomer(String name, String catId, float min, float max){
-			String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE title LIKE ? and category_id LIKE ? and price<? and price>=? and approved=? ";
+	 public List<Drug> searchCustomer(String name, String catId, float min, float max, String sortBy, String ascDesc){
+			String sql = "SELECT id, title, drugCode, descript, contra, form, image, inventory, price, company_id, category_id, approved FROM Drug WHERE title LIKE ? and category_id LIKE ? and price<? and price>=? and approved=? " + wrapSort(sortBy, ascDesc);
 			return db.query(sql, new RowMap(), name, catId, max, min, 1);
+	 }
+	 
+	 
+	 private String wrapSort(String sortBy, String ascDesc) {
+		if(sortBy=="") {
+			return ";";
+		} 
+		return " ORDER BY " + sortBy + " " + ascDesc + ";";
 	 }
 
 	 

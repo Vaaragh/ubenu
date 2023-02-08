@@ -128,9 +128,32 @@
   </tr>
   </div>
   </table>
-  </div>
+
   
-  <div>
+  <div th:if="${session.user.sysId.equals(user.sysId)}">
+  	<table>
+  	<tr>
+  	<th>Drugs</th>
+  	<th>Subtotal</th>
+  	<th>Date</th>
+  	</tr>
+  	<tbody th:if="${customerHistory!=null}">
+  	<tr th:each="order : ${customerHistory}">
+  	
+  	<td>
+  	<table>
+  	<tr th:each="item : ${order.items}">
+  	<td th:text="${item.drug.drugName}">
+  	</table>
+  	</td>
+  	
+  	<td th:text="${order.total}"></td>
+  	<td th:text="${order.date}">
+  	
+  	</tr>
+  	</tbody>
+  	
+  	</table>
   
   
   </div>
