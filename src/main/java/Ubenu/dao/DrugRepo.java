@@ -3,6 +3,7 @@ package Ubenu.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -57,6 +58,7 @@ public class DrugRepo {
 			DrugCategory category = categoryServ.findOne(categoryId);
 			
 
+			System.out.println(TimeZone.getDefault().getID());
 			
 			Drug drug = new Drug();
 			drug.setSysId(id);
